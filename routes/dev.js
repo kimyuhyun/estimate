@@ -11,6 +11,18 @@ global.SAVE_MENUS;
 global.CURRENT_URL;
 //
 
+
+/*
+    :ID
+    req.params
+
+    get:
+    req.query
+
+    post:
+    req.body
+*/
+
 function checkMiddleWare(req, res, next) {
     if (process.env.NODE_ENV != 'development') {
         if (req.session.ID == null) {

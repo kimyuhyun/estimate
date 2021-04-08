@@ -75,6 +75,7 @@ router.get('/graph1', checkMiddleWare, async function(req, res, next) {
         });
         //
     }
+    // console.log(arr);
     res.render('./admin/graph1', {
         rows: arr.reverse()
     });
@@ -207,22 +208,25 @@ router.post('/liveuser', checkMiddleWare, function(req, res, next) {
                 });
             }).then(function(data) {
                 try {
-                    var tmp = data.split('|S|');
-                    moment.tz.setDefault("Asia/Seoul");
-                    var connTime = moment.unix(tmp[0] / 1000).format('YYYY-MM-DD HH:mm');
-                    var minDiff = moment.duration(moment(new Date()).diff(moment(connTime))).asMinutes();
-                    if (minDiff > 4) {
-                        console.log(minDiff);
-                        fs.unlink('./liveuser/' + file, function(err) {
-                            console.log(err);
+                    if (file != 'dummy') {
+                        var tmp = data.split('|S|');
+                        console.log(data);
+                        moment.tz.setDefault("Asia/Seoul");
+                        var connTime = moment.unix(tmp[0] / 1000).format('YYYY-MM-DD HH:mm');
+                        var minDiff = moment.duration(moment(new Date()).diff(moment(connTime))).asMinutes();
+                        if (minDiff > 4) {
+                            console.log(minDiff);
+                            fs.unlink('./liveuser/' + file, function(err) {
+                                console.log(err);
+                            });
+                        }
+                        arr.push({
+                            'id': file,
+                            'url': tmp[1],
+                            'date': connTime,
                         });
                     }
-                    arr.push({
-                        'id': file,
-                        'url': tmp[1],
-                        'date': connTime,
-                    });
-                    console.log(arr);
+                    // console.log(arr);
                 } catch (e) {
                     console.log(e);
                 }
