@@ -6,6 +6,7 @@ var db = require('../db');
 var multer = require('multer');
 var uniqid = require('uniqid');
 var utils = require('../Utils');
+var requestIp = require('request-ip');
 
 var upload = multer({
     storage: multer.diskStorage({
@@ -33,10 +34,12 @@ var upload = multer({
 });
 
 async function checkMiddleWare(req, res, next) {
+    var ip = requestIp.getClientIp(req);
+
     var rows;
     await new Promise(function(resolve, reject) {
         var sql = `SELECT VISIT FROM ANALYZER_tbl WHERE IP = ? ORDER BY IDX DESC LIMIT 0, 1`;
-        db.query(sql, req.sessionID, function(err, rows, fields) {
+        db.query(sql, ip, function(err, rows, fields) {
             if (!err) {
                 resolve(rows);
             }
@@ -49,11 +52,12 @@ async function checkMiddleWare(req, res, next) {
         var sql = `INSERT INTO ANALYZER_tbl SET IP = ?, AGENT = ?, VISIT = ?, WDATE = NOW()`;
         if (rows.length > 0) {
             var cnt = rows[0].VISIT + 1;
-            db.query(sql, [req.sessionID, req.headers['user-agent'], cnt], function(err, rows, fields) {
+            // console.log(sql, [ip, req.headers['user-agent'], cnt]);
+            db.query(sql, [ip, req.headers['user-agent'], cnt], function(err, rows, fields) {
                 resolve(cnt);
             });
         } else {
-            db.query(sql, [req.sessionID, req.headers['user-agent'], 1], function(err, rows, fields) {
+            db.query(sql, [ip, req.headers['user-agent'], 1], function(err, rows, fields) {
                 resolve(1);
             });
         }
@@ -63,7 +67,7 @@ async function checkMiddleWare(req, res, next) {
 
     //현재 접속자 파일 생성
     var memo = new Date().getTime() + "|S|" + req.baseUrl + req.path;
-    fs.writeFile('./liveuser/' + req.sessionID, memo, function(err) {
+    fs.writeFile('./liveuser/' + ip, memo, function(err) {
         console.log(memo);
     });
     //
@@ -76,7 +80,7 @@ router.get('/myinfo/:ID', checkMiddleWare, function(req, res, next) {
     var id = req.params.ID;
     var sql = `SELECT * FROM MEMB_tbl WHERE ID = ?`;
     db.query(sql, id, function(err, rows, fields) {
-        console.log(rows);
+        // console.log(rows);
         if (!err) {
             res.send(rows[0]);
         } else {
@@ -147,11 +151,15 @@ router.get('/login/:ID', checkMiddleWare, async function(req, res, next) {
             });
         }).then();
     }
+    req.session.ID = id;
+    req.session.LEVEL1 = level1;
 
-    res.send({
-        code: 1,
-        ID: id,
-        LEVEL1: level1,
+    req.session.save(function() {
+        res.send({
+            code: 1,
+            ID: id,
+            LEVEL1: level1,
+        });
     });
 });
 
@@ -170,12 +178,26 @@ router.get('/dstore/:ID', checkMiddleWare, function(req, res, next) {
     });
 });
 
+//상품리스트
+router.get('/product/:ID', checkMiddleWare, function(req, res, next) {
+    var id = req.params.ID;
+    var sql = "SELECT IDX, NAME1, GUKUK, COST_PRICE, SALE_PRICE, FILENAME0, IS_TAX_FREE, UNIT, MEMO FROM PDT_tbl WHERE MEMB_ID = ? ORDER BY NAME1 ASC";
+    db.query(sql, id, function(err, rows, fields) {
+        if (!err) {
+            res.send(rows);
+        } else {
+            res.send(err);
+        }
+    });
+});
 
-router.get('/dstore/:ID/:IDX', checkMiddleWare, function(req, res, next) {
+
+router.get('/view/:TABLE/:ID/:IDX', checkMiddleWare, function(req, res, next) {
+    var table = req.params.TABLE;
     var id = req.params.ID;
     var idx = req.params.IDX;
 
-    var sql = "SELECT * FROM DSTORE_tbl WHERE MEMB_ID = ? AND IDX = ?";
+    var sql = "SELECT * FROM " + table + " WHERE MEMB_ID = ? AND IDX = ?";
     db.query(sql, [id, idx], function(err, rows, fields) {
         // console.log(rows);
         if (!err) {
