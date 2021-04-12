@@ -1,0 +1,142 @@
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <!-- <meta name="viewport" content="width=1200, initial-scale=1, shrink-to-fit=no"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <style>
+        table {
+            width: 100%;
+            border: 1px solid #333333;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 4px;
+            border: 1px solid #333333;
+        }
+    </style>
+
+<body class="p-5">
+    <div class="d-flex flex-row justify-content-between mb-4">
+        <div class="d-flex w-25">로고</div>
+        <h1 class="d-flex w-50 justify-content-center mb-0">견 적 서</h1>
+        <div class="d-flex w-25 align-items-end justify-content-end"><u>No. <%=row.docNum%></u></div>
+    </div>
+
+    <div class="d-flex flex-row">
+        <div class="d-flex flex-column justify-content-between w-50">
+            <div class="align-self-center"><%=row.edate%></div>
+            <div class="d-flex flex-row justify-content-between w-75 align-self-center px-4" style="border-bottom: 1px dotted #333;">
+                <h4 class="mb-0"><b><%=row.destName%></b></h4>
+                <div>귀중</div>
+            </div>
+            <div class="align-self-center" style="font-size: 12px; margin-top: -15px;">
+                <% if (row.destTel != '') { %>
+                    <span class="me-1">T: <%=row.destTel%></span>
+                <% } %>
+                <% if (row.destFax != '') { %>
+                    <span class="me-1">F: <%=row.destFax%></span>
+                <% } %>
+                <% if (row.destHp != '') { %>
+                    <span class="me-1">M: <%=row.destHp%></span>
+                <% } %>
+                <% if (row.destEmail != '') { %>
+                    <span>E: <%=row.destEmail%></span>
+                <% } %>
+            </div>
+            <div>아래와 같이 견적 합니다.</div>
+        </div>
+
+        <div class="d-flex flex-column  w-50">
+            <div style="font-size: 12px;">
+                <span class="me-1">담당자: <%=row.MANAGER%></span>
+                <span class="me-1">M: <%=row.HP%></span>
+                <span class="me-1">E: <%=row.EMAIL%></span>
+            </div>
+            <table>
+                <tr>
+                    <td rowspan="5" class="text-center bg-light">공<br><br>급<br><br>자</td>
+                    <td colspan="4" class="p-0">
+                        <table style="border: 0px;">
+                            <tr>
+                                <td class="bg-light" style="width: 100px; border: 0px;">사업자 등록번호</td>
+                                <td style="border: 0px; border-left: 1px solid #333333;"><%=row.CNUM%></td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="text-center bg-light">상호</td>
+                    <td><b><%=row.COMPANY%></b></td>
+                    <td class="text-center bg-light">성명</td>
+                    <td><%=row.NAME1%></td>
+                </tr>
+
+                <tr>
+                    <td class="text-center bg-light">주소</td>
+                    <td colspan="3">(<%=row.ZIPCODE%>) <%=row.ADDR1%> <%=row.ADDR2%></td>
+                </tr>
+
+                <tr>
+                    <td class="text-center bg-light">업태</td>
+                    <td><%=row.UPTAE%></td>
+                    <td class="text-center bg-light">종목</td>
+                    <td><%=row.JONGMOK%></td>
+                </tr>
+
+                <tr>
+                    <td class="text-center bg-light">TEL</td>
+                    <td><%=row.TEL%></td>
+                    <td class="text-center bg-light">FAX</td>
+                    <td><%=row.FAX%></td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+    <div class="d-flex flex-row justify-content-between my-4">
+        <h4 class="mb-0">견적금액<%=row.TYPE1==0?'(VAT포함)':'(VAT별도)'%></h4>
+        <h4 class="mb-0">일금 <%=row.HAN_PRICE%> 원정 (￦<%=row.TTL_PRICE.toLocaleString()%>)</h4>
+    </div>
+
+    <table>
+        <tr class="text-center bg-light">
+            <td width="20">No.</td>
+            <td>품명</td>
+            <td>규격</td>
+            <td>단위</td>
+            <td>수량</td>
+            <td>단가</td>
+            <td>공급가액</td>
+            <td>세액</td>
+            <td>합계</td>
+        </tr>
+<%
+    var i = 0;
+    for (obj of list) {
+        i++;
+%>
+        <tr>
+            <td align="center"><%=i%></td>
+            <td><%=obj.NAME1%></td>
+            <td align="center"><%=obj.GUKUK%></td>
+            <td align="center"><%=obj.UNIT%></td>
+            <td class="text-end"><%=obj.QTY.toLocaleString()%></td>
+            <td class="text-end"><%=obj.DANGA.toLocaleString()%></td>
+            <td class="text-end"><%=obj.PRICE.toLocaleString()%></td>
+            <td class="text-end"><%=obj.TAX.toLocaleString()%></td>
+            <td class="text-end"><%=(obj.PRICE + obj.TAX).toLocaleString()%></td>
+        </tr>
+<%
+    }
+%>
+    </table>
+</body>
+
+</html>

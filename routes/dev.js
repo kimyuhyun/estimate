@@ -39,15 +39,19 @@ function checkMiddleWare(req, res, next) {
     });
 }
 
-router.get('/graph1', checkMiddleWare, function(req, res, next) {
+router.get('/graph1', checkMiddleWare, async function(req, res, next) {
     var sql = ``;
-    db.query(sql, function(err, rows, fields) {
-        console.log(rows);
-        if (!err) {
+    await new Promise(function(resolve, reject) {
+        db.query(sql, function(err, rows, fields) {
+            console.log(rows);
+            if (!err) {
 
-        } else {
-            res.send(err);
-        }
+            } else {
+                res.send(err);
+            }
+        });
+    }).then(function(data) {
+        rows = data;
     });
 });
 

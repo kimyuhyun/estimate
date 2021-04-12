@@ -191,6 +191,27 @@ router.get('/product/:ID', checkMiddleWare, function(req, res, next) {
     });
 });
 
+//견적서 리스트
+router.get('/estimate_list/:ID', checkMiddleWare, function(req, res, next) {
+    var id = req.params.ID;
+    var sql = `SELECT
+                A.IDX,
+                A.EDATE,
+                A.DSTORE_COMPNAY,
+                A.MEMO,
+                (SELECT SUM(DANGA * QTY) FROM ESTIMATE_CHILD_tbl WHERE PARENT_IDX = A.IDX) as TTL_PRICE
+                FROM ESTIMATE_tbl as A
+                WHERE A.MEMB_ID = ? ORDER BY A.EDATE DESC`;
+    db.query(sql, id, function(err, rows, fields) {
+        if (!err) {
+            res.send(rows);
+        } else {
+            res.send(err);
+        }
+    });
+});
+
+
 
 router.get('/view/:TABLE/:ID/:IDX', checkMiddleWare, function(req, res, next) {
     var table = req.params.TABLE;
@@ -244,7 +265,8 @@ router.post('/write', checkMiddleWare, function(req, res, next) {
             if (!err) {
                 res.send({
                     code: 1,
-                    msg: '등록 되었습니다.'
+                    msg: '등록 되었습니다.',
+                    result: rows,
                 });
             } else {
                 res.send(err);
@@ -258,7 +280,8 @@ router.post('/write', checkMiddleWare, function(req, res, next) {
             if (!err) {
                 res.send({
                     code: 1,
-                    msg: '수정 되었습니다.'
+                    msg: '수정 되었습니다.',
+                    result: rows,
                 });
             } else {
                 res.send(err);
