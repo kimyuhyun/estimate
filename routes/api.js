@@ -316,13 +316,25 @@ router.get('/daum_address', function(req, res, next) {
     res.render('./daum_address');
 });
 
-router.post('/fileUpload', upload.array('upload_file'), async function(req, res, next) {
-    await utils.setResize(req.files[0]).then(function(newFileName) {
-        console.log('newFileName', newFileName);
-        res.send(newFileName);
+router.post('/file_upload', upload.single('upload_file'), async function(req, res, next) {
+    await utils.setResize(req.file).then(function(newFileName) {
+        console.log('newFileName', process.env.HOST_NAME + '/' + newFileName);
+        res.send(process.env.HOST_NAME + '/' + newFileName);
     });
 });
 
+
+router.get('/file_upload', function(req, res, next) {
+    var html = `
+        <div>`+process.env.HOST_NAME+`</div>
+        <form method='post' action='./file_upload' enctype='multipart/form-data'>
+            <input type='file' name='upload_file' />
+            <input type='submit'>
+        </form>
+    `;
+
+    res.send(html);
+});
 
 
 router.get('/', checkMiddleWare, function(req, res, next) {
