@@ -23,28 +23,28 @@
     <div class="d-flex flex-row justify-content-between mb-4">
         <div class="d-flex w-25">로고</div>
         <h1 class="d-flex w-50 justify-content-center mb-0">견 적 서</h1>
-        <div class="d-flex w-25 align-items-end justify-content-end"><u>No. <%=row.docNum%></u></div>
+        <div class="d-flex w-25 align-items-end justify-content-end"><u>No. <%=my.docNum%></u></div>
     </div>
 
     <div class="d-flex flex-row">
         <div class="d-flex flex-column justify-content-between w-50">
-            <div class="align-self-center"><%=row.edate%></div>
+            <div class="align-self-center"><%=your.EDATE%></div>
             <div class="d-flex flex-row justify-content-between w-75 align-self-center px-4" style="border-bottom: 1px dotted #333;">
-                <h4 class="mb-0"><b><%=row.destName%></b></h4>
+                <h4 class="mb-0"><b><%=your.COMPANY%></b></h4>
                 <div>귀중</div>
             </div>
             <div class="align-self-center" style="font-size: 12px; margin-top: -15px;">
-                <% if (row.destTel != '') { %>
-                    <span class="me-1">T: <%=row.destTel%></span>
+                <% if (your.TEL != '') { %>
+                <span class="me-1">T: <%=your.TEL%></span>
                 <% } %>
-                <% if (row.destFax != '') { %>
-                    <span class="me-1">F: <%=row.destFax%></span>
+                <% if (your.FAX != '') { %>
+                <span class="me-1">F: <%=your.FAX%></span>
                 <% } %>
-                <% if (row.destHp != '') { %>
-                    <span class="me-1">M: <%=row.destHp%></span>
+                <% if (your.HP != '') { %>
+                <span class="me-1">M: <%=your.HP%></span>
                 <% } %>
-                <% if (row.destEmail != '') { %>
-                    <span>E: <%=row.destEmail%></span>
+                <% if (your.EMAIL != '') { %>
+                <span>E: <%=your.EMAIL%></span>
                 <% } %>
             </div>
             <div>아래와 같이 견적 합니다.</div>
@@ -52,9 +52,9 @@
 
         <div class="d-flex flex-column  w-50">
             <div style="font-size: 12px;">
-                <span class="me-1">담당자: <%=row.MANAGER%></span>
-                <span class="me-1">M: <%=row.HP%></span>
-                <span class="me-1">E: <%=row.EMAIL%></span>
+                <span class="me-1">담당자: <%=my.MANAGER%></span>
+                <span class="me-1">M: <%=my.HP%></span>
+                <span class="me-1">E: <%=my.EMAIL%></span>
             </div>
             <table>
                 <tr>
@@ -63,7 +63,7 @@
                         <table style="border: 0px;">
                             <tr>
                                 <td class="bg-light" style="width: 100px; border: 0px;">사업자 등록번호</td>
-                                <td style="border: 0px; border-left: 1px solid #333333;"><%=row.CNUM%></td>
+                                <td style="border: 0px; border-left: 1px solid #333333;"><%=my.CNUM%></td>
                             </tr>
                         </table>
 
@@ -72,28 +72,28 @@
 
                 <tr>
                     <td class="text-center bg-light">상호</td>
-                    <td><b><%=row.COMPANY%></b></td>
+                    <td><b><%=my.COMPANY%></b></td>
                     <td class="text-center bg-light">성명</td>
-                    <td><%=row.NAME1%></td>
+                    <td><%=my.NAME1%></td>
                 </tr>
 
                 <tr>
                     <td class="text-center bg-light">주소</td>
-                    <td colspan="3">(<%=row.ZIPCODE%>) <%=row.ADDR1%> <%=row.ADDR2%></td>
+                    <td colspan="3">(<%=my.ZIPCODE%>) <%=my.ADDR1%> <%=my.ADDR2%></td>
                 </tr>
 
                 <tr>
                     <td class="text-center bg-light">업태</td>
-                    <td><%=row.UPTAE%></td>
+                    <td><%=my.UPTAE%></td>
                     <td class="text-center bg-light">종목</td>
-                    <td><%=row.JONGMOK%></td>
+                    <td><%=my.JONGMOK%></td>
                 </tr>
 
                 <tr>
                     <td class="text-center bg-light">TEL</td>
-                    <td><%=row.TEL%></td>
+                    <td><%=my.TEL%></td>
                     <td class="text-center bg-light">FAX</td>
-                    <td><%=row.FAX%></td>
+                    <td><%=my.FAX%></td>
                 </tr>
 
             </table>
@@ -101,12 +101,12 @@
     </div>
 
     <div class="d-flex flex-row justify-content-between my-4">
-        <h4 class="mb-0">견적금액<%=row.TYPE1==0?'(VAT포함)':'(VAT별도)'%></h4>
-        <h4 class="mb-0">일금 <%=row.HAN_PRICE%> 원정 (￦<%=row.TTL_PRICE.toLocaleString()%>)</h4>
+        <h4 class="mb-0">견적금액<%=your.IS_VAT==0?'(VAT포함)':'(VAT별도)'%></h4>
+        <h4 class="mb-0">일금 <%=my.HAN_PRICE%> 원정 (￦<%=my.TTL_PRICE.toLocaleString()%>)</h4>
     </div>
 
     <table>
-        <tr class="text-center bg-light">
+        <tr class="text-center" style="background: #eeeeee;">
             <td width="20">No.</td>
             <td>품명</td>
             <td>규격</td>
@@ -118,6 +118,8 @@
             <td>합계</td>
         </tr>
 <%
+    var priceSum = 0;
+    var taxSum = 0;
     var i = 0;
     for (obj of list) {
         i++;
@@ -134,8 +136,61 @@
             <td class="text-end"><%=(obj.PRICE + obj.TAX).toLocaleString()%></td>
         </tr>
 <%
+        priceSum = priceSum + obj.PRICE;
+        taxSum = taxSum + obj.TAX;
     }
 %>
+        <tr>
+            <td align="center"></td>
+            <td><b>합계</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="text-end"><b><%=priceSum.toLocaleString()%></b></td>
+            <td class="text-end"><b><%=taxSum.toLocaleString()%></b></td>
+            <td class="text-end"><b><%=(priceSum + taxSum).toLocaleString()%></b></td>
+        </tr>
+<%
+
+    var gap = 21 - i;
+
+    if (i > 0) {
+        for (j=0;j<gap;j++) {
+%>
+    <tr>
+        <td align="center" style="height: 23px;"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+<%
+        }
+    }
+%>
+        <tr>
+            <td align="center" rowspan="4">견<br>적<br>내<br>용</td>
+            <td rowspan="4" colspan="4" valign="top"><%=your.CONTENT%></td>
+            <td align="center">비고</td>
+            <td align="left" colspan="3"><%=your.ETC%></td>
+        </tr>
+        <tr>
+            <td align="center">유효일</td>
+            <td align="left" colspan="3"><%=your.AVA%></td>
+        </tr>
+        <tr>
+            <td align="center">납기일</td>
+            <td align="left" colspan="3"><%=your.DLV%></td>
+        </tr>
+        <tr>
+            <td align="center">참조</td>
+            <td align="left" colspan="3"><%=your.REFER%></td>
+        </tr>
     </table>
 </body>
 

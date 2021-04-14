@@ -5,7 +5,6 @@ var fs = require('fs')
 var multer = require('multer');
 var uniqid = require('uniqid');
 var db = require('../db');
-// var imageResize = require('../ImageResize');
 var utils = require('../Utils');
 
 

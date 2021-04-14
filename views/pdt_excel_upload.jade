@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    div(class='card shadow mt-5')
+        div(class='card-header') 
+            | 상품 엑셀업로드
+        div(class='card-body')
+            form(action='/excel/pdt_upload?TOKEN='+token, method='POST', enctype='multipart/form-data')
+                input(name='token', type='hidden', value='#{token}')
+                input(class='form-control', name='xlsx', type='file')
+                div(style='text-align: right;')
+                    input(type='submit', class='btn btn-primary mt-2', value='파일업로드')
+                        
+            
+    div(class='mt-2')            
+        a(href='/상품샘플.xlsx')
+            | 양식다운로드
+            

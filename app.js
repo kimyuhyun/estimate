@@ -15,7 +15,8 @@ var adminRouter = require('./routes/admin');
 var crudRouter = require('./routes/crud');
 var analyzerRouter = require('./routes/analyzer');
 var apiRouter = require('./routes/api');
-var docRouter = require('./routes/doc');
+var estimateRouter = require('./routes/estimate');
+var excelRouter = require('./routes/excel');
 
 var app = express();
 
@@ -58,13 +59,15 @@ app.use('/admin', adminRouter);
 app.use('/crud', crudRouter);
 app.use('/analyzer', analyzerRouter);
 app.use('/api', apiRouter);
-app.use('/doc', docRouter);
+app.use('/estimate', estimateRouter);
+app.use('/excel', excelRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     // res.status(404).send('페이지가 없습니다.');
     // res.status(500).send('500 에러');
     next(createError(404));
+    // next();
 });
 
 // error handler

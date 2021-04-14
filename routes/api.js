@@ -7,6 +7,7 @@ var multer = require('multer');
 var uniqid = require('uniqid');
 var utils = require('../Utils');
 var requestIp = require('request-ip');
+var moment = require('moment');
 
 var upload = multer({
     storage: multer.diskStorage({
@@ -167,7 +168,7 @@ router.get('/login/:ID', checkMiddleWare, async function(req, res, next) {
 //거래처
 router.get('/dstore/:ID', checkMiddleWare, function(req, res, next) {
     var id = req.params.ID;
-    var sql = "SELECT IDX, COMPANY, NAME1, ADDR1, ADDR2, TEL, FAX FROM DSTORE_tbl WHERE MEMB_ID = ? ORDER BY COMPANY ASC";
+    var sql = "SELECT IDX, COMPANY, NAME1, ADDR1, ADDR2, TEL, FAX, EMAIL, HP, MEMO FROM DSTORE_tbl WHERE MEMB_ID = ? ORDER BY IDX DESC";
     db.query(sql, id, function(err, rows, fields) {
         // console.log(rows);
         if (!err) {
@@ -181,7 +182,7 @@ router.get('/dstore/:ID', checkMiddleWare, function(req, res, next) {
 //상품리스트
 router.get('/product/:ID', checkMiddleWare, function(req, res, next) {
     var id = req.params.ID;
-    var sql = "SELECT IDX, NAME1, GUKUK, COST_PRICE, SALE_PRICE, FILENAME0, IS_TAX_FREE, UNIT, MEMO FROM PDT_tbl WHERE MEMB_ID = ? ORDER BY NAME1 ASC";
+    var sql = "SELECT IDX, NAME1, GUKUK, COST_PRICE, SALE_PRICE, FILENAME0, IS_TAX_FREE, UNIT, MEMO FROM PDT_tbl WHERE MEMB_ID = ? ORDER BY IDX DESC";
     db.query(sql, id, function(err, rows, fields) {
         if (!err) {
             res.send(rows);
@@ -197,7 +198,7 @@ router.get('/estimate_list/:ID', checkMiddleWare, function(req, res, next) {
     var sql = `SELECT
                 A.IDX,
                 A.EDATE,
-                A.DSTORE_COMPNAY,
+                A.COMPANY,
                 A.MEMO,
                 (SELECT SUM(DANGA * QTY) FROM ESTIMATE_CHILD_tbl WHERE PARENT_IDX = A.IDX) as TTL_PRICE
                 FROM ESTIMATE_tbl as A
@@ -219,8 +220,9 @@ router.get('/view/:TABLE/:ID/:IDX', checkMiddleWare, function(req, res, next) {
     var idx = req.params.IDX;
 
     var sql = "SELECT * FROM " + table + " WHERE MEMB_ID = ? AND IDX = ?";
+console.log(sql);
     db.query(sql, [id, idx], function(err, rows, fields) {
-        // console.log(rows);
+        console.log(rows);
         if (!err) {
             res.send(rows[0]);
         } else {
