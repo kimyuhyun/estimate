@@ -318,8 +318,8 @@ router.get('/daum_address', function(req, res, next) {
 
 router.post('/file_upload', upload.single('upload_file'), async function(req, res, next) {
     await utils.setResize(req.file).then(function(newFileName) {
-        console.log('newFileName', process.env.HOST_NAME + '/' + newFileName);
-        res.send(process.env.HOST_NAME + '/' + newFileName);
+        console.log('newFileName', newFileName);
+        res.send(newFileName);
     });
 });
 
