@@ -168,7 +168,7 @@ router.get('/login/:ID', checkMiddleWare, async function(req, res, next) {
 //거래처
 router.get('/dstore/:ID', checkMiddleWare, function(req, res, next) {
     var id = req.params.ID;
-    var sql = "SELECT IDX, COMPANY, NAME1, ADDR1, ADDR2, TEL, FAX, EMAIL, HP, MEMO FROM DSTORE_tbl WHERE MEMB_ID = ? ORDER BY IDX DESC";
+    var sql = "SELECT * FROM DSTORE_tbl WHERE MEMB_ID = ? ORDER BY IDX DESC";
     db.query(sql, id, function(err, rows, fields) {
         // console.log(rows);
         if (!err) {
@@ -193,16 +193,16 @@ router.get('/product/:ID', checkMiddleWare, function(req, res, next) {
 });
 
 //견적서 리스트
-router.get('/estimate_list/:ID', checkMiddleWare, function(req, res, next) {
+router.get('/estimate/:ID', checkMiddleWare, function(req, res, next) {
     var id = req.params.ID;
     var sql = `SELECT
                 A.IDX,
                 A.EDATE,
                 A.COMPANY,
                 A.MEMO,
-                (SELECT SUM(DANGA * QTY) FROM ESTIMATE_CHILD_tbl WHERE PARENT_IDX = A.IDX) as TTL_PRICE
-                FROM ESTIMATE_tbl as A
-                WHERE A.MEMB_ID = ? ORDER BY A.EDATE DESC`;
+                (SELECT SUM(DANGA * QTY) FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'estimate' AND PARENT_IDX = A.IDX) as TTL_PRICE
+                FROM DOC_tbl as A
+                WHERE A.MEMB_ID = ? AND DOC_TYPE = 'estimate' ORDER BY A.EDATE DESC`;
     db.query(sql, id, function(err, rows, fields) {
         if (!err) {
             res.send(rows);
@@ -212,6 +212,99 @@ router.get('/estimate_list/:ID', checkMiddleWare, function(req, res, next) {
     });
 });
 
+
+
+//발주서 리스트
+router.get('/balju/:ID', checkMiddleWare, function(req, res, next) {
+    var id = req.params.ID;
+    var sql = `SELECT
+                A.IDX,
+                A.EDATE,
+                A.COMPANY,
+                A.MEMO,
+                (SELECT SUM(DANGA * QTY) FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'balju' AND PARENT_IDX = A.IDX) as TTL_PRICE
+                FROM DOC_tbl as A
+                WHERE A.MEMB_ID = ? AND DOC_TYPE = 'balju' ORDER BY A.EDATE DESC`;
+    db.query(sql, id, function(err, rows, fields) {
+        if (!err) {
+            res.send(rows);
+        } else {
+            res.send(err);
+        }
+    });
+});
+
+//명세서 리스트
+router.get('/mungse/:ID', checkMiddleWare, function(req, res, next) {
+    var id = req.params.ID;
+    var sql = `SELECT
+                A.IDX,
+                A.EDATE,
+                A.COMPANY,
+                A.MEMO,
+                (SELECT SUM(DANGA * QTY) FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'mungse' AND PARENT_IDX = A.IDX) as TTL_PRICE
+                FROM DOC_tbl as A
+                WHERE A.MEMB_ID = ? AND DOC_TYPE = 'mungse' ORDER BY A.EDATE DESC`;
+    db.query(sql, id, function(err, rows, fields) {
+        if (!err) {
+            res.send(rows);
+        } else {
+            res.send(err);
+        }
+    });
+});
+
+
+//문서번호 및 회사명 가져오기
+router.get('/get_doc_num/:ID/:IDX', async function(req, res, next) {
+    var id = req.params.ID;
+    var idx = req.params.IDX;
+
+    var companyName = "";
+
+    await new Promise(function(resolve, reject) {
+        var sql = "SELECT IDX, COMPANY FROM MEMB_tbl WHERE ID = ?";
+        db.query(sql, id, function(err, rows, fields) {
+            if (!err) {
+                resolve(rows[0].COMPANY);
+            } else {
+                res.send(err);
+            }
+        });
+    }).then(function(data){
+        companyName = data;
+    });
+
+    await new Promise(function(resolve, reject) {
+        var sql = "SELECT IDX FROM DOC_tbl WHERE MEMB_ID = ?";
+        db.query(sql, id, function(err, rows, fields) {
+            if (!err) {
+                var docNum = "";
+                for (i = 0; i < rows.length; i++) {
+                    if (rows[i].IDX == idx) {
+                        if (i < 10) {
+                            docNum = "000" + (i+1);
+                        } else if (i < 100) {
+                            docNum = "00" + (i+1);
+                        } else if (i < 1000) {
+                            docNum = "0" + (i+1);
+                        }
+                        docNum = moment().format('YYYYMMDD') + "-" + docNum;
+                        resolve(docNum);
+                        break;
+                    }
+                }
+            } else {
+                res.send(err);
+            }
+        });
+    }).then(function(data){
+        res.send({
+            docNum: data,
+            companyName: companyName,
+        });
+    });
+});
 
 
 router.get('/view/:TABLE/:ID/:IDX', checkMiddleWare, function(req, res, next) {

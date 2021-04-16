@@ -4,22 +4,50 @@ var bodyParser = require('body-parser');
 var db = require('../db');
 var moment = require('moment');
 
-/*
-    :ID
-    req.params
 
-    get:
-    req.query
+router.get('/', function(req, res, next) {
+    res.render('./doc/youngsu.html');
+});
 
-    post:
-    req.body
-*/
+router.get('/get_doc_num/:ID/:IDX', function(req, res, next) {
+    var id = req.params.ID;
+    var idx = req.params.IDX;
+
+    var sql = "SELECT IDX FROM MUNGSE_tbl WHERE MEMB_ID = ?";
+    db.query(sql, id, function(err, rows, fields) {
+        if (!err) {
+            var docNum = "";
+            for (i = 0; i < rows.length; i++) {
+                if (rows[i].IDX == idx) {
+                    if (i < 10) {
+                        docNum = "000" + (i+1);
+                    } else if (i < 100) {
+                        docNum = "00" + (i+1);
+                    } else if (i < 1000) {
+                        docNum = "0" + (i+1);
+                    }
+                    docNum = moment().format('YYYYMMDD') + "-" + docNum;
+
+                    res.send({
+                        docNum: docNum,
+                    });
+                    break;
+                }
+            }
+        } else {
+            res.send(err);
+        }
+    });
+});
 
 
-router.get('/estimate/:IDX', async function(req, res, next) {
+
+router.get('/:IDX', async function(req, res, next) {
+    var template = req.query.template;
     var idx = req.params.IDX;
     var sql = "";
-    var row = new Object();
+    var my = new Object();
+    var your = new Object();
     var list = new Object();
 
     var docNum = "";
@@ -32,37 +60,23 @@ router.get('/estimate/:IDX', async function(req, res, next) {
     await new Promise(function(resolve, reject) {
         db.query(sql, idx, function(err, rows, fields) {
             if (!err) {
-                resolve(rows[0])
+                resolve(rows[0]);
             } else {
-                res.send(err);
+                resolve(err);
             }
         });
     }).then(function(data) {
+        if (data == null) {
+            res.send(data);
+            return;
+        }
+
         destIdx = data.DSTORE_IDX;
         sourceId = data.MEMB_ID;
 
-        row.edate = moment(data.EDATE).format('YYYY년 MM월 DD일');
-        row.destName = data.DSTORE_COMPNAY;
-        row.destMemo = data.MEMO;
+        your = data;
+        your.EDATE = moment(data.EDATE).format('YYYY년 MM월 DD일');
     });
-
-    if (destIdx != '') {
-        sql = "SELECT TEL, FAX, HP, EMAIL FROM DSTORE_tbl WHERE IDX = ?";
-        await new Promise(function(resolve, reject) {
-            db.query(sql, destIdx, function(err, rows, fields) {
-                if (!err) {
-                    resolve(rows[0])
-                } else {
-                    res.send(err);
-                }
-            });
-        }).then(function(data) {
-            row.destTel = data.TEL;
-            row.destFax = data.FAX;
-            row.destHp = data.HP;
-            row.destEmail = data.EMAIL;
-        });
-    }
 
     //문서번호 생성하기
     sql = "SELECT IDX FROM ESTIMATE_tbl WHERE MEMB_ID = ?";
@@ -87,7 +101,7 @@ router.get('/estimate/:IDX', async function(req, res, next) {
         } else if (data < 1000) {
             docNum = "0" + data;
         }
-        row.docNum = moment().format('YYYYMMDD') + "-" + docNum;
+        my.docNum = moment().format('YYYYMMDD') + "-" + docNum;
     });
     //
 
@@ -107,11 +121,11 @@ router.get('/estimate/:IDX', async function(req, res, next) {
         delete data.PASS1;
         delete data.IDX;
         delete data.ID;
-        row = Object.assign(row, data);
+        my = Object.assign(my, data);
     });
 
     //총금액 구하기
-    sql = "SELECT SUM(DANGA * QTY) as TTL FROM ESTIMATE_CHILD_tbl WHERE PARENT_IDX = ?";
+    sql = "SELECT SUM(DANGA * QTY) as TTL FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'estimate' AND PARENT_IDX = ?";
     await new Promise(function(resolve, reject) {
         db.query(sql, idx, function(err, rows, fields) {
             if (!err) {
@@ -121,12 +135,12 @@ router.get('/estimate/:IDX', async function(req, res, next) {
             }
         });
     }).then(function(data) {
-        row.TTL_PRICE = data;
-        row.HAN_PRICE = geKoreanNumber(data);
+        my.TTL_PRICE = data;
+        my.HAN_PRICE = geKoreanNumber(data);
     });
 
     //상품리스트 구하기
-    sql = `SELECT NAME1, GUKUK, MEMO, UNIT, QTY, DANGA, FILENAME0, PRICE, TAX FROM ESTIMATE_CHILD_tbl WHERE PARENT_IDX = ?`;
+    sql = `SELECT NAME1, GUKUK, MEMO, UNIT, QTY, DANGA, FILENAME0, PRICE, TAX FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'estimate' AND PARENT_IDX = ?`;
     await new Promise(function(resolve, reject) {
         db.query(sql, idx, function(err, rows, fields) {
             if (!err) {
@@ -139,10 +153,11 @@ router.get('/estimate/:IDX', async function(req, res, next) {
         list = data;
     });
 
-    console.log(list);
+    console.log(your);
 
-    res.render('./doc/estimate1.html', {
-        row: row,
+    res.render('./doc/estimate' + template + '.html', {
+        my: my,
+        your: your,
         list: list,
     });
 });
@@ -174,6 +189,7 @@ function geKoreanNumber(number) {
     }
     return answer;
 }
+
 
 
 module.exports = router;

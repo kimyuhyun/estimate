@@ -15,7 +15,12 @@ var adminRouter = require('./routes/admin');
 var crudRouter = require('./routes/crud');
 var analyzerRouter = require('./routes/analyzer');
 var apiRouter = require('./routes/api');
+
 var estimateRouter = require('./routes/estimate');
+var mungseRouter = require('./routes/mungse');
+var youngsuRouter = require('./routes/youngsu');
+var baljuRouter = require('./routes/balju');
+
 var excelRouter = require('./routes/excel');
 
 var app = express();
@@ -59,7 +64,13 @@ app.use('/admin', adminRouter);
 app.use('/crud', crudRouter);
 app.use('/analyzer', analyzerRouter);
 app.use('/api', apiRouter);
+
 app.use('/estimate', estimateRouter);
+app.use('/mungse', mungseRouter);
+app.use('/youngsu', youngsuRouter);
+app.use('/balju', baljuRouter);
+
+
 app.use('/excel', excelRouter);
 
 // catch 404 and forward to error handler

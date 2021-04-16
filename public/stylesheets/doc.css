@@ -1,0 +1,13 @@
+table { width: 100%; font-size: 12px; }
+th { color: blue; font-weight: normal; text-align: center; }
+
+
+
+.tax_table {border-top:2px solid blue;border-left:2px solid blue;border-right:2px solid blue;border-bottom:2px solid blue;}
+.tax_table .LineTop {border-top:1px solid blue;}
+.tax_table .LineRight {border-right:1px solid blue;}
+.tax_table .LineBottom {border-bottom:1px solid blue;}
+.tax_table .LineLeft {border-left:1px solid blue;}
+.tax_table .LineTop2 {border-top:2px solid blue;}
+.tax_table .LineRight2 {border-right:2px solid blue;}
+.tax_table .LineBottom2 {border-bottom:2px solid blue;}
