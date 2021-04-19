@@ -6,41 +6,8 @@ var moment = require('moment');
 
 
 router.get('/', function(req, res, next) {
-    res.render('./doc/youngsu.html');
+    res.render('./doc/youngsu1.html');
 });
-
-router.get('/get_doc_num/:ID/:IDX', function(req, res, next) {
-    var id = req.params.ID;
-    var idx = req.params.IDX;
-
-    var sql = "SELECT IDX FROM MUNGSE_tbl WHERE MEMB_ID = ?";
-    db.query(sql, id, function(err, rows, fields) {
-        if (!err) {
-            var docNum = "";
-            for (i = 0; i < rows.length; i++) {
-                if (rows[i].IDX == idx) {
-                    if (i < 10) {
-                        docNum = "000" + (i+1);
-                    } else if (i < 100) {
-                        docNum = "00" + (i+1);
-                    } else if (i < 1000) {
-                        docNum = "0" + (i+1);
-                    }
-                    docNum = moment().format('YYYYMMDD') + "-" + docNum;
-
-                    res.send({
-                        docNum: docNum,
-                    });
-                    break;
-                }
-            }
-        } else {
-            res.send(err);
-        }
-    });
-});
-
-
 
 router.get('/:IDX', async function(req, res, next) {
     var template = req.query.template;
@@ -56,7 +23,7 @@ router.get('/:IDX', async function(req, res, next) {
 
 
     //기본정보 세팅
-    sql = "SELECT * FROM ESTIMATE_tbl WHERE IDX = ?";
+    sql = "SELECT * FROM DOC_tbl WHERE IDX = ?";
     await new Promise(function(resolve, reject) {
         db.query(sql, idx, function(err, rows, fields) {
             if (!err) {
@@ -75,11 +42,11 @@ router.get('/:IDX', async function(req, res, next) {
         sourceId = data.MEMB_ID;
 
         your = data;
-        your.EDATE = moment(data.EDATE).format('YYYY년 MM월 DD일');
+        your.EDATE = data.EDATE;//moment(data.EDATE).format('YYYY년 MM월 DD일');
     });
 
     //문서번호 생성하기
-    sql = "SELECT IDX FROM ESTIMATE_tbl WHERE MEMB_ID = ?";
+    sql = "SELECT IDX FROM DOC_tbl WHERE MEMB_ID = ?";
     await new Promise(function(resolve, reject) {
         db.query(sql, sourceId, function(err, rows, fields) {
             if (!err) {
@@ -125,7 +92,7 @@ router.get('/:IDX', async function(req, res, next) {
     });
 
     //총금액 구하기
-    sql = "SELECT SUM(DANGA * QTY) as TTL FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'estimate' AND PARENT_IDX = ?";
+    sql = "SELECT SUM(DANGA * QTY) as TTL FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'mungse' AND PARENT_IDX = ?";
     await new Promise(function(resolve, reject) {
         db.query(sql, idx, function(err, rows, fields) {
             if (!err) {
@@ -140,7 +107,7 @@ router.get('/:IDX', async function(req, res, next) {
     });
 
     //상품리스트 구하기
-    sql = `SELECT NAME1, GUKUK, MEMO, UNIT, QTY, DANGA, FILENAME0, PRICE, TAX FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'estimate' AND PARENT_IDX = ?`;
+    sql = `SELECT NAME1, GUKUK, MEMO, UNIT, QTY, DANGA, FILENAME0, PRICE, TAX FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'mungse' AND PARENT_IDX = ?`;
     await new Promise(function(resolve, reject) {
         db.query(sql, idx, function(err, rows, fields) {
             if (!err) {
@@ -153,9 +120,10 @@ router.get('/:IDX', async function(req, res, next) {
         list = data;
     });
 
-    console.log(your);
+    console.log('my', my);
+    console.log('your', your);
 
-    res.render('./doc/estimate' + template + '.html', {
+    res.render('./doc/youngsu' + template + '.html', {
         my: my,
         your: your,
         list: list,

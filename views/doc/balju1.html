@@ -34,7 +34,7 @@ table { font-size: 14px; }
 %>
 
     <table cellspacing="0" cellpadding="0" class="w-100" style="font-size: 14px;">
-        <tr><td colspan="2" class="text-center"><b style="font-size: 50px;">견&nbsp;&nbsp;&nbsp;적&nbsp;&nbsp;&nbsp;서</b></td></tr>
+        <tr><td colspan="2" class="text-center"><b style="font-size: 50px;">발&nbsp;&nbsp;&nbsp;주&nbsp;&nbsp;&nbsp;서</b></td></tr>
         <tr><td colspan="2" style="border-bottom: 1px solid #000;">No. <%=my.docNum%></td></tr>
 
         <tr>
@@ -43,9 +43,10 @@ table { font-size: 14px; }
                 <table>
                     <tr>
                         <th width="60" class="d-flex justify-content-between">
-                            <div>견</div>
-                            <div>적</div>
+                            <div>발</div>
+                            <div>주</div>
                             <div>일</div>
+                            <div>자</div>
                         </th>
                         <td class="px-1"></td>
                         <td><%=your.EDATE%></td>
@@ -55,41 +56,11 @@ table { font-size: 14px; }
                             <div>납</div>
                             <div>기</div>
                             <div>일</div>
+                            <div>자</div>
                         </th>
                         <td></td>
                         <td><%=your.DLV%></td>
                     </tr>
-
-                    <tr>
-                        <th class="d-flex justify-content-between">
-                            <div>유</div>
-                            <div>효</div>
-                            <div>일</div>
-                        </th>
-                        <td></td>
-                        <td><%=your.AVA%></td>
-                    </tr>
-
-                    <tr>
-                        <th class="d-flex justify-content-between">
-                            <div>견</div>
-                            <div>적</div>
-                            <div>내</div>
-                            <div>용</div>
-                        </th>
-                        <td></td>
-                        <td><%=your.CONTENT%></td>
-                    </tr>
-
-                    <tr>
-                        <th class="d-flex justify-content-between">
-                            <div>참</div>
-                            <div>조</div>
-                        </th>
-                        <td></td>
-                        <td><%=your.REFER%></td>
-                    </tr>
-
                     <tr>
                         <th class="d-flex justify-content-between">
                             <div>전</div>
@@ -120,10 +91,8 @@ table { font-size: 14px; }
                         <td><%=your.EMAIL%></td>
                     </tr>
                 </table>
-                <br>
-                <div style="font-size: 18px;">아래와 같이 견적합니다.</div>
             </td>
-            <td style="min-width: 500px;" valign="top">
+            <td style="min-width: 500px;">
                 <h4 class="mt-3"><%=my.COMPANY%></h4>
                 <table>
                     <tr>
@@ -163,15 +132,16 @@ table { font-size: 14px; }
                     </tr>
                     <tr>
                         <th class="d-flex justify-content-between">
-                            <div>전</div>
-                            <div>화</div>
-                            <div>번</div>
-                            <div>호</div>
+                            <div>연</div>
+                            <div>락</div>
+                            <div>처</div>
                         </th>
                         <td></td>
                         <td>
+                            <%=my.HP==''?'':'M: '+my.HP%>
                             <%=my.TEL==''?'':'T: '+my.TEL%>
                             <%=my.FAX==''?'':'F: '+my.FAX%>
+                            <%=my.EMAIL==''?'':'E: '+my.EMAIL%>
                         </td>
                     </tr>
                     <tr>
@@ -182,36 +152,13 @@ table { font-size: 14px; }
                         <td></td>
                         <td><%=my.ADDR1%> <%=my.ADDR2%></td>
                     </tr>
-
-                    <tr>
-                        <th class="d-flex justify-content-between">
-                            <div>담</div>
-                            <div>당</div>
-                            <div>자</div>
-                        </th>
-                        <td></td>
-                        <td><%=my.MANAGER%></td>
-                    </tr>
-
-                    <tr>
-                        <th class="d-flex justify-content-between">
-                            <div>연</div>
-                            <div>락</div>
-                            <div>처</div>
-                        </th>
-                        <td></td>
-                        <td>
-                            <%=my.HP==''?'':'M: '+my.HP%>
-                            <%=my.EMAIL==''?'':'E: '+my.EMAIL%>
-                        </td>
-                    </tr>
                 </table>
             </td>
         </tr>
 
         <tr><td colspan="2" style="border-bottom: 1px solid #000; height: 30px;"></td></tr>
-        <tr style="height: 50px; ">
-            <td><h5>견적금액 <%=your.IS_VAT==0?'(VAT포함)':'(VAT별도)'%></h5></td>
+        <tr style="height: 60px; ">
+            <td><h5>발주금액 <%=your.IS_VAT==0?'(VAT포함)':'(VAT별도)'%></h5></td>
             <td class="text-end"><h5>일금 <%=my.HAN_PRICE%> 원정 (￦<%=my.TTL_PRICE.toLocaleString()%>)</h5></td>
         </tr>
 
@@ -226,7 +173,6 @@ table { font-size: 14px; }
                         <th width="120">단가</th>
                         <th width="120">공급가액</th>
                         <th width="100">세액</th>
-                        <th width="120">합계</th>
                     </tr>
 <%
     var priceSum = 0;
@@ -237,26 +183,22 @@ table { font-size: 14px; }
 %>
                     <tr>
                         <td align="center" valign="middle"><%=i%></td>
-
 <%
-    if (obj.FILENAME0 != '') {
+        if (obj.FILENAME0 != '') {
 %>
                         <td class="p-0"><img src="<%=obj.FILENAME0%>" height="50"/> <%=obj.NAME1%></td>
 <%
-    } else {
+        } else {
 %>
                         <td><%=obj.NAME1%></td>
 <%
-    }
+        }
 %>
-
-
                         <td align="center" valign="middle"><%=obj.UNIT%></td>
                         <td class="text-center" valign="middle"><%=obj.QTY.toLocaleString()%></td>
                         <td class="text-end" valign="middle"><%=obj.DANGA.toLocaleString()%></td>
                         <td class="text-end" valign="middle"><%=obj.PRICE.toLocaleString()%></td>
                         <td class="text-end" valign="middle"><%=obj.TAX.toLocaleString()%></td>
-                        <td class="text-end" valign="middle"><%=(obj.PRICE + obj.TAX).toLocaleString()%></td>
                     </tr>
 <%
         priceSum = priceSum + obj.PRICE;
@@ -267,7 +209,6 @@ table { font-size: 14px; }
                         <td align="center" colspan="5"><b>합계</b></td>
                         <td class="text-end"><b><%=priceSum.toLocaleString()%></b></td>
                         <td class="text-end"><b><%=taxSum.toLocaleString()%></b></td>
-                        <td class="text-end"><b><%=(priceSum + taxSum).toLocaleString()%></b></td>
                     </tr>
 
 
@@ -277,8 +218,6 @@ table { font-size: 14px; }
             </td>
         </tr>
     </table>
-
-    <!-- <%=your.MEMO%> -->
 </body>
 </html>
 

@@ -254,6 +254,25 @@ router.get('/mungse/:ID', checkMiddleWare, function(req, res, next) {
     });
 });
 
+//영수증 리스트
+router.get('/youngsu/:ID', checkMiddleWare, function(req, res, next) {
+    var id = req.params.ID;
+    var sql = `SELECT
+                A.IDX,
+                A.EDATE,
+                A.COMPANY,
+                A.MEMO,
+                (SELECT SUM(DANGA * QTY) FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'youngsu' AND PARENT_IDX = A.IDX) as TTL_PRICE
+                FROM DOC_tbl as A
+                WHERE A.MEMB_ID = ? AND DOC_TYPE = 'youngsu' ORDER BY A.EDATE DESC`;
+    db.query(sql, id, function(err, rows, fields) {
+        if (!err) {
+            res.send(rows);
+        } else {
+            res.send(err);
+        }
+    });
+});
 
 //문서번호 및 회사명 가져오기
 router.get('/get_doc_num/:ID/:IDX', async function(req, res, next) {
@@ -307,6 +326,59 @@ router.get('/get_doc_num/:ID/:IDX', async function(req, res, next) {
 });
 
 
+
+router.get('/doc_modify/:ID/:IDX', checkMiddleWare, async function(req, res, next) {
+    var id = req.params.ID;
+    var idx = req.params.IDX;
+
+    var info = {};
+    var list = {};
+
+    await new Promise(function(resolve, reject) {
+        var sql = "SELECT * FROM DOC_tbl WHERE MEMB_ID = ? AND IDX = ?";
+        db.query(sql, [id, idx], function(err, rows, fields) {
+            resolve(rows[0]);
+        });
+    }).then(function(data) {
+        info = data;
+    });
+
+    await new Promise(function(resolve, reject) {
+        var sql = "SELECT * FROM DOC_CHILD_tbl WHERE MEMB_ID = ? AND PARENT_IDX = ?";
+        db.query(sql, [id, idx], function(err, rows, fields) {
+            resolve(rows);
+        });
+    }).then(function(data) {
+        list = data;
+    });
+
+    res.send({
+        info: info,
+        list: list,
+    });
+});
+
+
+//자식 상품 삭제
+router.get('/doc_child_delete/:ID/:PARENT_IDX', checkMiddleWare, async function(req, res, next) {
+    var id = req.params.ID;
+    var parentIdx = req.params.PARENT_IDX;
+
+    var sql = "DELETE FROM DOC_CHILD_tbl WHERE MEMB_ID = ? AND PARENT_IDX = ?";
+    db.query(sql, [id, parentIdx], function(err, rows, fields) {
+        if (!err) {
+            res.send({code: 1});
+        } else {
+            res.send({code: 0});
+        }
+    });
+});
+
+
+
+
+
+
 router.get('/view/:TABLE/:ID/:IDX', checkMiddleWare, function(req, res, next) {
     var table = req.params.TABLE;
     var id = req.params.ID;
@@ -323,14 +395,6 @@ console.log(sql);
         }
     });
 });
-
-
-
-
-
-
-
-
 
 router.post('/write', checkMiddleWare, function(req, res, next) {
     var idx = req.body.IDX;

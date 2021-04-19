@@ -6,7 +6,7 @@ var moment = require('moment');
 
 
 router.get('/', function(req, res, next) {
-    res.render('./doc/balju.html');
+    res.render('./doc/balju1.html');
 });
 
 
@@ -46,7 +46,8 @@ router.get('/:IDX', async function(req, res, next) {
         sourceId = data.MEMB_ID;
 
         your = data;
-        your.EDATE = moment(data.EDATE).format('YYYY년 MM월 DD일');
+        // your.EDATE = moment(data.EDATE).format('YYYY년 MM월 DD일');
+        your.EDATE = moment(data.EDATE).format('YYYY-MM-DD');
     });
 
     //문서번호 생성하기
