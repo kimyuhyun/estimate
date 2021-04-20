@@ -231,6 +231,7 @@ table { font-size: 14px; }
                     <tr class="text-center">
                         <th width="50">No.</th>
                         <th>품명</th>
+                        <th>규격</th>
                         <th width="5%">단위</th>
                         <th width="5%">수량</th>
                         <th width="10%">단가</th>
@@ -259,8 +260,7 @@ table { font-size: 14px; }
 <%
     }
 %>
-
-
+                        <td align="center" valign="middle"><%=obj.GUKUK%></td>
                         <td align="center" valign="middle"><%=obj.UNIT%></td>
                         <td class="text-center" valign="middle"><%=obj.QTY.toLocaleString()%></td>
                         <td class="text-end" valign="middle"><%=obj.DANGA.toLocaleString()%></td>
@@ -274,7 +274,7 @@ table { font-size: 14px; }
     }
 %>
                     <tr>
-                        <td align="center" colspan="5"><b>합계</b></td>
+                        <td align="center" colspan="6"><b>합계</b></td>
                         <td class="text-end"><b><%=priceSum.toLocaleString()%></b></td>
                         <td class="text-end"><b><%=taxSum.toLocaleString()%></b></td>
                         <td class="text-end"><b><%=(priceSum + taxSum).toLocaleString()%></b></td>
