@@ -158,7 +158,18 @@ table { font-size: 14px; }
 
         <tr><td colspan="2" style="border-bottom: 1px solid #000; height: 30px;"></td></tr>
         <tr style="height: 60px; ">
-            <td><h5>발주금액 <%=your.IS_VAT==0?'(VAT포함)':'(VAT별도)'%></h5></td>
+            <td>
+                <h5>
+                    발주금액
+                    <% if (your.IS_VAT == 0) { %>
+                        (VAT 없음)
+                    <% } else if (your.IS_VAT == 1) { %>
+                        (VAT 포함)
+                    <% } else { %>
+                        (VAT 별도)
+                    <% } %>
+                </h5>
+            </td>
             <td class="text-end"><h5>일금 <%=my.HAN_PRICE%> 원정 (￦<%=my.TTL_PRICE.toLocaleString()%>)</h5></td>
         </tr>
 
@@ -168,11 +179,11 @@ table { font-size: 14px; }
                     <tr class="text-center">
                         <th width="50">No.</th>
                         <th>품명</th>
-                        <th width="100">단위</th>
-                        <th width="50">수량</th>
-                        <th width="120">단가</th>
-                        <th width="120">공급가액</th>
-                        <th width="100">세액</th>
+                        <th width="5%">단위</th>
+                        <th width="5%">수량</th>
+                        <th width="10%">단가</th>
+                        <th width="12%">공급가액</th>
+                        <th width="10%">세액</th>
                     </tr>
 <%
     var priceSum = 0;

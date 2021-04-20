@@ -107,7 +107,7 @@ router.get('/:IDX', async function(req, res, next) {
     });
 
     //상품리스트 구하기
-    sql = `SELECT NAME1, GUKUK, MEMO, UNIT, QTY, DANGA, FILENAME0, PRICE, TAX FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'mungse' AND PARENT_IDX = ?`;
+    sql = `SELECT NAME1, GUKUK, MEMO, UNIT, QTY, DANGA, FILENAME0, PRICE, TAX FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'mungse' AND PARENT_IDX = ? ORDER BY SORT1 ASC`;
     await new Promise(function(resolve, reject) {
         db.query(sql, idx, function(err, rows, fields) {
             if (!err) {

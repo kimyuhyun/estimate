@@ -344,7 +344,7 @@ router.get('/doc_modify/:ID/:IDX', checkMiddleWare, async function(req, res, nex
     });
 
     await new Promise(function(resolve, reject) {
-        var sql = "SELECT * FROM DOC_CHILD_tbl WHERE MEMB_ID = ? AND PARENT_IDX = ?";
+        var sql = "SELECT * FROM DOC_CHILD_tbl WHERE MEMB_ID = ? AND PARENT_IDX = ? ORDER BY SORT1";
         db.query(sql, [id, idx], function(err, rows, fields) {
             resolve(rows);
         });
