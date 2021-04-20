@@ -222,7 +222,7 @@ router.get('/balju/:ID', checkMiddleWare, function(req, res, next) {
                 A.EDATE,
                 A.COMPANY,
                 A.MEMO,
-                (SELECT SUM(PRICE + TAX) FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'estimate' AND PARENT_IDX = A.IDX) as TTL_PRICE
+                (SELECT SUM(PRICE + TAX) FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'balju' AND PARENT_IDX = A.IDX) as TTL_PRICE
                 FROM DOC_tbl as A
                 WHERE A.MEMB_ID = ? AND DOC_TYPE = 'balju' ORDER BY A.EDATE DESC`;
     db.query(sql, id, function(err, rows, fields) {
@@ -242,7 +242,7 @@ router.get('/mungse/:ID', checkMiddleWare, function(req, res, next) {
                 A.EDATE,
                 A.COMPANY,
                 A.MEMO,
-                (SELECT SUM(PRICE + TAX) FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'estimate' AND PARENT_IDX = A.IDX) as TTL_PRICE
+                (SELECT SUM(PRICE + TAX) FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'mungse' AND PARENT_IDX = A.IDX) as TTL_PRICE
                 FROM DOC_tbl as A
                 WHERE A.MEMB_ID = ? AND DOC_TYPE = 'mungse' ORDER BY A.EDATE DESC`;
     db.query(sql, id, function(err, rows, fields) {
