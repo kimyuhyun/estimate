@@ -8,19 +8,7 @@ var bcrypt = require('bcrypt');
 var multiparty = require('multiparty');
 var xlsx = require('xlsx');
 
-function checkMiddleWare(req, res, next) {
-    if (process.env.NODE_ENV != 'development') {
-        if (req.session.ID == null) {
-            res.redirect('/admin/login');
-            return;
-        }
-    }
-    CURRENT_URL = req.baseUrl + req.path;
-    utils.setSaveMenu(req).then(function(data) {
-        SAVE_MENUS = data;
-        next();
-    });
-}
+
 
 router.get('/get_excel_token/:ID', async function(req, res, next) {
     var id = req.params.ID;
@@ -99,6 +87,16 @@ router.post('/pdt_upload', function(req, res, next) {
     });
 
     form.on('file', async (name, file) => { //파일이 입력 되었을 때 발생하는 이벤트
+        var tmp = file.originalFilename.split(".");
+        var ext = tmp[tmp.length-1];
+        if (ext != 'xlsx') {
+            res.render('./pdt_excel_upload_completed',{
+                msg: 'xlsx 파일만 등록할 수 있습니다.',
+                token: token,
+            });
+            return;
+        }
+
         const workbook = xlsx.readFile(file.path); //xlsx 파일 가져와서 객체 생성
         const sheetnames = Object.keys(workbook.Sheets); //엑셀 sheets 이름 가져오기
         let i = sheetnames.length; //전체 엑셀 시트 개수
@@ -150,6 +148,14 @@ router.post('/pdt_upload', function(req, res, next) {
         //상품 넣기!!
         for (obj of result) {
             await new Promise(function(resolve, reject) {
+                if (obj['품명'] == null) {
+                    res.render('./pdt_excel_upload_completed',{
+                        msg: 'Excel 파일을 예제 형식에 맞게 업로드 해주세요.',
+                        token: token,
+                    });
+                    return;
+                }
+
                 var gukuk = obj['규격']==null?'':obj['규격'];
                 var unit = obj['단위']==null?'':obj['단위'];
                 var costPrice = obj['원가']==null?'0':obj['원가'];
@@ -213,6 +219,16 @@ router.post('/ds_upload', function(req, res, next) {
     });
 
     form.on('file', async (name, file) => { //파일이 입력 되었을 때 발생하는 이벤트
+        var tmp = file.originalFilename.split(".");
+        var ext = tmp[tmp.length-1];
+        if (ext != 'xlsx') {
+            res.render('./ds_excel_upload_completed',{
+                msg: 'xlsx 파일만 등록할 수 있습니다.',
+                token: token,
+            });
+            return;
+        }
+
         const workbook = xlsx.readFile(file.path); //xlsx 파일 가져와서 객체 생성
         const sheetnames = Object.keys(workbook.Sheets); //엑셀 sheets 이름 가져오기
         let i = sheetnames.length; //전체 엑셀 시트 개수
@@ -264,6 +280,14 @@ router.post('/ds_upload', function(req, res, next) {
         //거래처 넣기!!
         for (obj of result) {
             await new Promise(function(resolve, reject) {
+                if (obj['회사명'] == null) {
+                    res.render('./ds_excel_upload_completed',{
+                        msg: 'Excel 파일을 예제 형식에 맞게 업로드 해주세요.',
+                        token: token,
+                    });
+                    return;
+                }
+
                 var cnum = obj['사업자번호']==null?'':obj['사업자번호'];
                 var name1 = obj['대표자']==null?'':obj['대표자'];
                 var uptae = obj['업태']==null?'':obj['업태'];
@@ -301,7 +325,7 @@ router.post('/ds_upload', function(req, res, next) {
                     } else {
                         console.log('Err', err);
                         res.render('./ds_excel_upload_completed',{
-                            msg: 'Excel 파일을 예제상품의 형식에 맞게 업로드 해주세요.',
+                            msg: 'Excel 파일을 예제 형식에 맞게 업로드 해주세요.',
                             token: token,
                         });
                         return;
