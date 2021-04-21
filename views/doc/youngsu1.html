@@ -96,9 +96,18 @@
                     </tr>
 <%
     var priceSum = 0;
+    var i = 0;
+    var bg = "";
     for (obj of list) {
+        i++;
+
+        if ((i % 2) == 0) {
+            bg = "#ecedff";
+        } else {
+            bg = "#fff";
+        }
 %>
-                    <tr class="LineTop">
+                    <tr class="LineTop" style="background: <%=bg%>;">
                         <td class="LineRight ps-1"><%=obj.NAME1%></td>
                         <td class="LineRight text-center"><%=obj.QTY%></td>
                         <td class="LineRight text-end pe-1"><%=obj.DANGA.toLocaleString()%></td>

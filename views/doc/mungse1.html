@@ -116,12 +116,14 @@
     var priceSum = 0;
     var taxSum = 0;
     var i = 0;
-    var bg = "#fff";
+    var bg = "";
     for (obj of list) {
         i++;
 
         if ((i % 2) == 0) {
             bg = "#ecedff";
+        } else {
+            bg = "#fff";
         }
 %>
         <tr class="LineTop" style="height: 24px; background: <%=bg%>;">
