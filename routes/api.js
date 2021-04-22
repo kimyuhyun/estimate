@@ -35,6 +35,11 @@ var upload = multer({
 });
 
 async function checkMiddleWare(req, res, next) {
+    if (req.query.token == null || req.query.token != 'kkyyhh') {
+        res.send('누구냐넌?');
+        return;
+    }
+
     var ip = requestIp.getClientIp(req);
 
     var rows;
