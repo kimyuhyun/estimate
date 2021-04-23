@@ -97,7 +97,7 @@ router.get('/:IDX', async function(req, res, next) {
     });
 
     //총금액 구하기
-    sql = "SELECT SUM(DANGA * QTY) as TTL FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'balju' AND PARENT_IDX = ?";
+    sql = "SELECT SUM(PRICE + TAX) as TTL FROM DOC_CHILD_tbl WHERE DOC_TYPE = 'balju' AND PARENT_IDX = ?";
     await new Promise(function(resolve, reject) {
         db.query(sql, idx, function(err, rows, fields) {
             if (!err) {

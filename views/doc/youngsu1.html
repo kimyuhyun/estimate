@@ -111,10 +111,10 @@
                         <td class="LineRight ps-1"><%=obj.NAME1%></td>
                         <td class="LineRight text-center"><%=obj.QTY%></td>
                         <td class="LineRight text-end pe-1"><%=obj.DANGA.toLocaleString()%></td>
-                        <td class=" text-end pe-1"><%=(obj.DANGA * obj.QTY).toLocaleString()%></td>
+                        <td class=" text-end pe-1"><%=(obj.PRICE + obj.TAX).toLocaleString()%></td>
                     </tr>
 <%
-        priceSum = priceSum + (obj.DANGA * obj.QTY);
+        priceSum = priceSum + (obj.PRICE + obj.TAX);
     }
 %>
                     <tr class="LineTop">
