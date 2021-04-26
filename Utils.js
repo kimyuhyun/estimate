@@ -6,10 +6,9 @@ var requestIp = require('request-ip');
 class Utils {
     setSaveMenu(req) {
         var self = this;
-        var ip = requestIp.getClientIp(req);
         return new Promise(function(resolve, reject) {
             if (req.query.NAME1 != null) {
-                db.query('SELECT * FROM SAVE_MENU_tbl WHERE LINK = ? AND ID = ?', [CURRENT_URL, ip], function(err, rows, fields) {
+                db.query('SELECT * FROM SAVE_MENU_tbl WHERE LINK = ? AND ID = ?', [CURRENT_URL, req.session.ID], function(err, rows, fields) {
                     if (!err) {
                         if (rows.length == 0) {
                             var sql = `
@@ -18,7 +17,7 @@ class Utils {
                                 NAME1 = ?,
                                 LINK = ? `;
                             console.log(sql, [req.session.ID, req.query.NAME1, CURRENT_URL]);
-                            db.query(sql, [ip, req.query.NAME1, CURRENT_URL], function(err, rows, fields) {
+                            db.query(sql, [req.session.ID, req.query.NAME1, CURRENT_URL], function(err, rows, fields) {
                                 self.getSaveMenu(req).then(function(data) {
                                     resolve(data);
                                 });
@@ -43,7 +42,7 @@ class Utils {
 
     getSaveMenu(req) {
         return new Promise(function(resolve, reject) {
-            // console.log(req.session);
+            console.log(req.session);
             if (req.session.ID != null) {
                 db.query("SELECT * FROM SAVE_MENU_tbl WHERE ID = ?", req.session.ID, function(err, rows, fields) {
                     if (!err) {

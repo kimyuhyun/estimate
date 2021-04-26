@@ -12,16 +12,17 @@ global.CURRENT_URL;
 //
 
 function checkMiddleWare(req, res, next) {
-    // if (process.env.NODE_ENV != 'development') {
+    if (process.env.NODE_ENV != 'development') {
         if (req.session.ID == null) {
             res.redirect('/admin/login');
             return;
         }
-    // }
+    }
 
     CURRENT_URL = req.baseUrl + req.path;
 
     utils.setSaveMenu(req).then(function(data) {
+        console.log(data);
         SAVE_MENUS = data;
         next();
     });
