@@ -75,10 +75,10 @@ app.use('/excel', excelRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    res.status(404).send('페이지가 없습니다.');
-    res.status(500).send('500 에러');
-    next(createError(404));
-    // next();
+    // res.status(404).send('페이지가 없습니다.');
+    // res.status(500).send('500 에러');
+    // next(createError(404));
+    next();
 });
 
 // error handler
