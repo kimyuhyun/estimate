@@ -79,16 +79,15 @@ block content
                             console.log(form.record);
                             for (var i = 0; i < fileLimitCount; i++) {
                                 if (eval("form.record.FILENAME"+i) != null && eval("form.record.FILENAME"+i) != '') {
-                                    eval("var fileLink = form.record.FILENAME"+i+".split('|')[0];");
-                                    eval("var fileName = form.record.FILENAME"+i+".split('|')[1];");
-
+                                    eval("var fileLink = form.record.FILENAME"+i+";");
+                                    
                                     var html = '';
-                                    html += '<a href="!{ hostname }/'+fileLink+'" target="_blank">';
-                                    html += fileName;
+                                    html += '<a href="'+fileLink+'" target="_blank">';
+                                    html += fileLink;
                                     html += '</a>';
 
                                     $('#UPLOADED_FILES').w2field().set({
-                                        img: fileLink+"|"+fileName,
+                                        img: fileLink,
                                         id: "FILENAME"+i,
                                         text: html,
                                     }, true);
@@ -112,7 +111,7 @@ block content
                     { field: 'FILENAME0', caption: '썸네일', size: '50px', sortable: true, resizable: true, attr: 'align=center',	//세팅 해줘야함
                         render: function(record) {
                             if (record.FILENAME0 != null && record.FILENAME0 != '') {
-                                return '<img src="!{ hostname }/' + record.FILENAME0.split("|")[0] + '" style="width: 30px; height: 30px;" />';
+                                return '<img src="' + record.FILENAME0 + '" style="width: 30px; height: 30px;" />';
                             }
                         }
                     },

@@ -127,17 +127,16 @@ block content
             });
                         
             if ("!{ row.FILENAME0 }" != '') {
-                var fileLink = "!{ row.FILENAME0 }".split('|')[0];
-                var fileName = "!{ row.FILENAME0 }".split('|')[1];
+                var fileLink = "!{ row.FILENAME0 }";
                 
-                if (fileName != '') {
+                if (fileLink != '') {
                 	var html = '';
-                	html += '<a href="!{ hostname }/'+fileLink+'" target="_blank">';
-                	html += fileName;
+                	html += '<a href="'+fileLink+'" target="_blank">';
+                	html += fileLink;
                 	html += '</a>';
                 
                 	$('#UPLOADED_FILES').w2field().set({
-                		img: fileLink+"|"+fileName,
+                		img: fileLink,
                 		id: "FILENAME0",
                 		text: html,
                 	});
