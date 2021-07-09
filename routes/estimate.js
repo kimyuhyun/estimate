@@ -4,17 +4,6 @@ var bodyParser = require('body-parser');
 var db = require('../db');
 var moment = require('moment');
 
-/*
-    :ID
-    req.params
-
-    get:
-    req.query
-
-    post:
-    req.body
-*/
-
 
 
 router.get('/:IDX', async function(req, res, next) {
@@ -135,6 +124,8 @@ router.get('/:IDX', async function(req, res, next) {
         your: your,
         list: list,
     });
+
+    console.log('랜더완료');
 });
 
 

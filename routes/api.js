@@ -511,7 +511,7 @@ router.get('/', checkMiddleWare, function(req, res, next) {
     // });
 
     res.render('./index.html', {
-        asd: 'QWEQWE',
+        asd: '견적서드림 API서버',
     });
 });
 
