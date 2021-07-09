@@ -6,7 +6,6 @@ var db = require('../db');
 var multer = require('multer');
 var uniqid = require('uniqid');
 var utils = require('../Utils');
-var requestIp = require('request-ip');
 var moment = require('moment');
 
 var upload = multer({
@@ -40,7 +39,7 @@ async function checkMiddleWare(req, res, next) {
         return;
     }
 
-    var ip = requestIp.getClientIp(req);
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     var rows;
     await new Promise(function(resolve, reject) {
