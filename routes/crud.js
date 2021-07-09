@@ -121,6 +121,7 @@ router.get('/iterator', checkMiddleWare, async function(req, res, next) {
 router.post('/write', checkMiddleWare, upload.array('FILES'), async function(req, res, next) {
     var table = req.body.table;
     var idx = req.body.IDX;
+    
 
     var uploadedLength = 0;
     if (req.body.UPLOADED_FILES != null && req.body.UPLOADED_FILES != '') {
@@ -159,6 +160,8 @@ router.post('/write', checkMiddleWare, upload.array('FILES'), async function(req
             records.push(req.body[key]);
         }
     }
+
+
 
     // console.log(records);return;
 

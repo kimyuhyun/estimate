@@ -497,6 +497,96 @@ router.get('/file_upload', function(req, res, next) {
     res.send(html);
 });
 
+router.post('/save_gukuk_unit', checkMiddleWare, async function(req, res, next) {
+    const id = req.body.MEMB_ID;
+    const gukuk = req.body.GUKUK;
+    const unit = req.body.UNIT;
+
+    var cnt = 0;
+    var sql = '';
+
+    if (gukuk) {
+        sql = `SELECT COUNT(*) as cnt FROM GUKUK_tbl WHERE MEMB_ID = ? AND NAME1 = ?`;
+        await new Promise(function(resolve, reject) {
+            db.query(sql, [id, gukuk], function(err, rows, fields) {
+                if (!err) {
+                    resolve(rows[0]);
+                } else {
+                    res.send(err);
+                }
+            });
+        }).then(function(data) {
+            cnt = data.cnt;
+        });
+
+        if (cnt == 0) {
+            sql = `INSERT INTO GUKUK_tbl SET MEMB_ID = ?, NAME1 = ?`;
+            db.query(sql, [id, gukuk]);
+        }
+    }
+
+    if (unit) {
+        sql = `SELECT COUNT(*) as cnt FROM UNIT_tbl WHERE MEMB_ID = ? AND NAME1 = ?`;
+        await new Promise(function(resolve, reject) {
+            db.query(sql, [id, unit], function(err, rows, fields) {
+                if (!err) {
+                    resolve(rows[0]);
+                } else {
+                    res.send(err);
+                }
+            });
+        }).then(function(data) {
+            cnt = data.cnt;
+        });
+
+        if (cnt == 0) {
+            sql = `INSERT INTO UNIT_tbl SET MEMB_ID = ?, NAME1 = ?`;
+            db.query(sql, [id, unit]);
+        }
+    }
+
+
+});
+
+router.get('/get_gukuk/:MEMB_ID', checkMiddleWare, async function(req, res, next) {
+    const id = req.params.MEMB_ID;
+    var arr = [];
+
+    const sql = `SELECT IDX, NAME1 FROM GUKUK_tbl WHERE MEMB_ID = ?`;
+    await new Promise(function(resolve, reject) {
+        db.query(sql, id, function(err, rows, fields) {
+            // console.log(rows);
+            if (!err) {
+                resolve(rows);
+            } else {
+                res.send(err);
+            }
+        });
+    }).then(function(data) {
+        arr = data;
+    });
+    res.send(arr);
+});
+
+router.get('/get_unit/:MEMB_ID', checkMiddleWare, async function(req, res, next) {
+    const id = req.params.MEMB_ID;
+    var arr = [];
+
+    const sql = `SELECT IDX, NAME1 FROM UNIT_tbl WHERE MEMB_ID = ?`;
+    await new Promise(function(resolve, reject) {
+        db.query(sql, id, function(err, rows, fields) {
+            // console.log(rows);
+            if (!err) {
+                resolve(rows);
+            } else {
+                res.send(err);
+            }
+        });
+    }).then(function(data) {
+        arr = data;
+    });
+    res.send(arr);
+});
 
 router.get('/', checkMiddleWare, function(req, res, next) {
     // var sql = ``;
