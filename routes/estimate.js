@@ -3,7 +3,7 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var db = require('../db');
 var moment = require('moment');
-
+var utils = require('../Utils');
 
 
 router.get('/:IDX', async function(req, res, next) {
@@ -49,7 +49,7 @@ router.get('/:IDX', async function(req, res, next) {
             if (!err) {
                 for (i = 0; i < rows.length; i++) {
                     if (rows[i].IDX == idx) {
-                        resolve(i+1);
+                        resolve(i + 1);
                         break;
                     }
                 }
@@ -100,7 +100,7 @@ router.get('/:IDX', async function(req, res, next) {
         });
     }).then(function(data) {
         my.TTL_PRICE = data;
-        my.HAN_PRICE = geKoreanNumber(data);
+        my.HAN_PRICE = utils.num2han(data);
     });
 
     //상품리스트 구하기
@@ -129,32 +129,15 @@ router.get('/:IDX', async function(req, res, next) {
 });
 
 
+router.get('/test/:number', async function(req, res, next) {
+    const number = req.params.number;
+
+    res.send(utils.num2han(number));
+
+});
 
 
-function geKoreanNumber(number) {
-    const koreanNumber = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
-    const tenThousandUnit = ['', '만', '억', '조'];
-    const tenUnit = ['', '십', '백', '천'];
-    let answer = '';
-    let unit = 10000;
-    let index = 0;
-    let division = Math.pow(unit, index);
 
-    while (Math.floor(number / division) > 0) {
-        const mod = Math.floor(number % (division * unit) / division);
-        if (mod) {
-            const modToArray = mod.toString().split('');
-            const modLength = modToArray.length - 1;
-            const toKorean = modToArray.reduce((a, v, i) => {
-                a += `${koreanNumber[v*1]}${tenUnit[modLength - i]}`;
-                return a;
-            }, '');
-            answer = `${toKorean}${tenThousandUnit[index]} ` + answer;
-        }
-        division = Math.pow(unit, ++index);
-    }
-    return answer;
-}
 
 
 module.exports = router;

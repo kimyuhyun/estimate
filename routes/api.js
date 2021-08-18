@@ -196,6 +196,7 @@ router.get('/product/:ID', checkMiddleWare, function(req, res, next) {
     });
 });
 
+
 //견적서 리스트
 router.get('/estimate/:ID', checkMiddleWare, function(req, res, next) {
     var id = req.params.ID;
@@ -379,6 +380,76 @@ router.get('/doc_child_delete/:ID/:PARENT_IDX', checkMiddleWare, async function(
 });
 
 
+//빠른견적 리스트
+router.get('/quick/:ID', checkMiddleWare, function(req, res, next) {
+    var id = req.params.ID;
+    var sql = `SELECT IDX, EDATE, COMPANY, TTL_PRICE FROM QUICK_tbl WHERE MEMB_ID = ? ORDER BY EDATE DESC`;
+    db.query(sql, id, function(err, rows, fields) {
+        if (!err) {
+            res.send(utils.nvl(rows));
+        } else {
+            res.send(err);
+        }
+    });
+});
+
+
+//빠른견적 디테일
+router.get('/quick/:ID/:IDX', checkMiddleWare, async function(req, res, next) {
+    const id = req.params.ID;
+    const idx = req.params.IDX;
+
+    var obj = {};
+
+    await new Promise(function(resolve, reject) {
+        const sql = `SELECT EDATE, COMPANY, TTL_PRICE, CSV FROM QUICK_tbl WHERE MEMB_ID = ? AND IDX = ?`;
+        db.query(sql, [id, idx], function(err, rows, fields) {
+            if (!err) {
+                resolve(rows[0]);
+            } else {
+                console.log(err);
+                res.send(err);
+            }
+        });
+    }).then(function(data) {
+        obj = data;
+    });
+
+
+    var csv = obj.CSV;
+    delete obj.CSV;
+
+    var tmpArr = csv.split(',');
+    var tmpArr2 = tmpArr.division(4);
+
+    var arr = [];
+    for (rows of tmpArr2) {
+        var o = {};
+        o.col1 = rows[0];
+        o.col2 = rows[1];
+        o.col3 = rows[2];
+        o.col4 = rows[3];
+        arr.push(o);
+    }
+
+    obj.array = arr;
+
+    res.send(utils.nvl(obj));
+
+});
+
+//배열을 인풋값에 맞게 나줘줌!!
+Array.prototype.division = function (n) {
+    var arr = this;
+    var len = arr.length;
+    var cnt = Math.floor(len / n) + (Math.floor(len % n) > 0 ? 1 : 0);
+    var tmp = [];
+    for (var i = 0; i < cnt; i++) {
+        tmp.push(arr.splice(0, n));
+    }
+    return tmp;
+}
+//
 
 
 

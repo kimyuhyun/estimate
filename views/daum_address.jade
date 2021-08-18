@@ -13,7 +13,11 @@ html
             new daum.Postcode({
                 oncomplete: function(data) {
                     console.log(data);
-                    console.log(data.zonecode + '|' + data.address);
+                    var result = data.zonecode + '|' + data.address;
+                    if (data.buildingName != '') {
+                        result += '(' + data.buildingName + ')';
+                    }
+                    console.log(result);
                 }            
             }).embed();            
             document.getElementById('__daum__layer_1').style.width = '100%';
