@@ -13,6 +13,7 @@ var db = require('./db');
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var crudRouter = require('./routes/crud');
+var crud2Router = require('./routes/crud2');
 var analyzerRouter = require('./routes/analyzer');
 var apiRouter = require('./routes/api');
 
@@ -22,6 +23,8 @@ var youngsuRouter = require('./routes/youngsu');
 var baljuRouter = require('./routes/balju');
 
 var excelRouter = require('./routes/excel');
+
+var articleRouter = require('./routes/article');
 
 var app = express();
 
@@ -62,6 +65,7 @@ app.use('/data', express.static('data'));
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
 app.use('/crud', crudRouter);
+app.use('/crud2', crud2Router);
 app.use('/analyzer', analyzerRouter);
 app.use('/api', apiRouter);
 
@@ -70,8 +74,9 @@ app.use('/mungse', mungseRouter);
 app.use('/youngsu', youngsuRouter);
 app.use('/balju', baljuRouter);
 
-
 app.use('/excel', excelRouter);
+
+app.use('/article', articleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

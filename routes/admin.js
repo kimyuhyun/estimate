@@ -22,7 +22,7 @@ function checkMiddleWare(req, res, next) {
     CURRENT_URL = req.baseUrl + req.path;
 
     utils.setSaveMenu(req).then(function(data) {
-        console.log(data);
+        // console.log(data);
         SAVE_MENUS = data;
         next();
     });
@@ -30,7 +30,7 @@ function checkMiddleWare(req, res, next) {
 
 router.get('/', checkMiddleWare, function(req, res, next) {
     db.query("SELECT SHOW_MENU_LINK FROM GRADE_tbl WHERE LEVEL1 = '?'", req.session.LEVEL1, function(err, rows, fields) {
-        console.log(rows);
+        // console.log(rows);
         if (!err) {
             var tmp = "";
             if (rows.length > 0) {

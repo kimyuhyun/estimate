@@ -70,6 +70,34 @@ async function checkMiddleWare(req, res, next) {
         console.log(data);
     });
 
+    fs.readdir('./liveuser', async function(err, filelist) {
+        for (file of filelist) {
+            await new Promise(function(resolve, reject) {
+                fs.readFile('./liveuser/' + file, 'utf8', function(err, data) {
+                    resolve(data);
+                });
+            }).then(function(data) {
+                try {
+                    if (file != 'dummy') {
+                        var tmp = data.split('|S|');
+                        console.log(data);
+                        moment.tz.setDefault("Asia/Seoul");
+                        var connTime = moment.unix(tmp[0] / 1000).format('YYYY-MM-DD HH:mm');
+                        var minDiff = moment.duration(moment(new Date()).diff(moment(connTime))).asMinutes();
+                        if (minDiff > 4) {
+                            console.log(minDiff);
+                            fs.unlink('./liveuser/' + file, function(err) {
+                                console.log(err);
+                            });
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            });
+        }
+    });
+
     //현재 접속자 파일 생성
     var memo = new Date().getTime() + "|S|" + req.baseUrl + req.path;
     fs.writeFile('./liveuser/' + ip, memo, function(err) {
@@ -522,6 +550,57 @@ router.post('/write', checkMiddleWare, function(req, res, next) {
             }
         });
     }
+});
+
+router.post('/copy', checkMiddleWare, async function(req, res, next) {
+    let idx = req.body.IDX;
+    let table = req.body.TABLE;
+    var arr = {};
+
+    await new Promise(function(resolve, reject) {
+        let sql = `SELECT * FROM ${table} WHERE idx = ?`;
+        console.log(sql, idx);
+        db.query(sql, idx, function(err, rows, fields) {
+            if (!err) {
+                resolve(rows[0]);
+            } else {
+                res.send(err);
+            }
+        });
+    }).then(function(data) {
+        arr = utils.nvl(data);
+    });
+
+    delete arr.IDX;
+    delete arr.WDATE;
+    delete arr.LDATE;
+
+    var sql = '';
+    var records = new Array();
+    for (key in arr) {
+        if (arr[key] != 'null') {
+            if (key == 'PASS1') {
+                sql += key + '= PASSWORD(?), ';
+            } else {
+                sql += key + '= ?, ';
+            }
+            records.push(arr[key]);
+        }
+    }
+
+    await new Promise(function(resolve, reject) {
+        sql = `INSERT INTO ${table} SET ${sql} WDATE = NOW(), LDATE = NOW()`;
+        db.query(sql, records, function(err, rows, fields) {
+            if (!err) {
+                resolve(rows);
+            } else {
+                res.send(err);
+            }
+        });
+    }).then(function(data) {
+        arr = utils.nvl(data);
+    });
+    res.send(arr);
 });
 
 

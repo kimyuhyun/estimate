@@ -35,11 +35,9 @@ var upload = multer({
 
 
 function checkMiddleWare(req, res, next) {
-    if (process.env.NODE_ENV != 'development') {
-        if (req.session.ID == null) {
-            res.redirect('/admin/login');
-            return;
-        }
+    if (req.session.ID == null) {
+        res.redirect('/admin/login');
+        return;
     }
     next();
 }
@@ -129,13 +127,15 @@ router.post('/write', checkMiddleWare, upload.array('FILES'), async function(req
     }
 
     for (i in req.files) {
-        var fileIndex = Number(i) + Number(uploadedLength);
-        // console.log("req.body.FILENAME" + fileIndex, i, uploadedLength);
-        await utils.setResize(req.files[i]).then(function(newFileName) {
-            newFileName = process.env.HOST_NAME + '/' + newFileName;
-            console.log('newFileName', newFileName);
-            eval("req.body.FILENAME" + fileIndex + " = newFileName");
-        });
+        console.log(req.files[i].originalname);
+        if (req.files[i].originalname != null) {
+            var fileIndex = Number(i) + Number(uploadedLength);
+            await utils.setResize(req.files[i]).then(function(newFileName) {
+                newFileName = process.env.HOST_NAME + '/' + newFileName;
+                console.log('newFileName', newFileName);
+                eval("req.body.FILENAME" + fileIndex + " = newFileName");
+            });
+        }
     }
 
     delete req.body.recid;
@@ -198,6 +198,8 @@ router.post('/write', checkMiddleWare, upload.array('FILES'), async function(req
     }
     console.log(sql, records);
 });
+
+
 
 router.get('/view', checkMiddleWare, async function(req, res, next) {
     console.log('/view', req.body);

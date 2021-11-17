@@ -1,228 +1,496 @@
 extends layout
 
 block content
-
     div(class='row')
-        div(class='col-12 col-md-8 mt-4')
-            div(id='grid' style='width: 100%; height: 730px;')
+        div(class='col-12 col-md-8 p-0')
+            div(id='grid1' style='width: 100%; height: 100%;')
 
-
-        div(class='col-12 col-md-4 mt-4')
+        div(class='col-12 col-md-4 p-0')
             div(id='form')
                 div(class='w2ui-page page-0')
                     div(class='w2ui-field w2ui-span2')                    
                         label 제목
                         div
-                            input(name='TITLE')
+                            input(name='title')
 
                     div(class='w2ui-field w2ui-span2')
                         label 내용
                         div
-                            textarea(name='MEMO', rows='5')
-
-                    div(class='w2ui-field w2ui-span2')
+                            textarea(name='memo', rows='15')
+                            
+                    div(class='w2ui-field w2ui-span2 mt-4')
                         label 파일
-                        div
-                            input(name='UPLOADED_FILES')
-
-                    div(class='w2ui-field w2ui-span2')                    
-                        label
-                        div
-                            input(name='FILES')
+                        div(class='d-flex flex-wrap img-thumbnail file_fields', style='min-height: 80px;', onDragEnter='dragEnter(event)', onDragLeave='dragLeave(event)', onDragOver='dragOver(event)', onDrop='drop(event)')
+                    
 
                 div(class='w2ui-buttons')
                     button(class='w2ui-btn' name='reset') 리셋
                     button(class='w2ui-btn w2ui-btn-blue' name='save' id='save') 입력
 
+    div(class='row')
+        div(class='col-12 col-md-6 p-0')
+            div(id='grid2' style='width: 100%; height: 400px;')
+            
+        div(class='col-12 col-md-6 p-0')
+            div(id='grid3' style='width: 100%; height: 400px;')
+
 
     //- 들여쓰기 중요함
     script.
-        //- var menuArr = JSON.parse('!{JSON.stringify(SAVE_MENUS)}');
-        var fileLimitCount = 10;
-        var table = 'BOARD_tbl';
-        var config = {
-            grid: {
-                url: {
-                    get: '/crud/list?table=' + table + '&board_id=!{ board_id }',
-                    remove: '/crud/remove?table=' + table,                    
-                },
-                recid: 'IDX',
-                limit: 20,
-                recordHeight: 30,
-                autoLoad: false,
-                name: 'grid',
-                show: {
-                    selectColumn: true,
-                    footer: true,
-                    toolbar: true,
-                    toolbarDelete: true,
-                },
-                sortData: [{ field: 'IDX', direction: 'DESC' }],
-                multiSelect: true,
-                multiSearch: true,
-                onError:function(e){
-                    console.log(e.xhr.responseText);
-                },
-                onClick: function(event) {
-                    if (event.column == null) {
-                        return;
-                    }
-
-                    var grid = this;
-                    var form = w2ui.form;
-                    event.onComplete = function () {
-                        var sel = grid.getSelection();
-                        if (sel.length == 1) {
-                            form.recid  = sel[0];
-                            form.clear();
-                            form.record = $.extend(true, {}, grid.get(sel[0]));
-                            console.log(form.record);
-                            for (var i = 0; i < fileLimitCount; i++) {
-                                if (eval("form.record.FILENAME"+i) != null && eval("form.record.FILENAME"+i) != '') {
-                                    eval("var fileLink = form.record.FILENAME"+i+";");
-                                    
-                                    var html = '';
-                                    html += '<a href="'+fileLink+'" target="_blank">';
-                                    html += fileLink;
-                                    html += '</a>';
-
-                                    $('#UPLOADED_FILES').w2field().set({
-                                        img: fileLink,
-                                        id: "FILENAME"+i,
-                                        text: html,
-                                    }, true);
-                                }
-                            }
-
-                            form.refresh();
-                            $("#save").text("수정");
-                        } else {
-                            form.clear();
-                            $("#save").text("입력");
-                        }
-                    }
-                },
-                searches: [
-                    { field: 'TITLE', caption: '제목', type: 'text' },			//세팅 해줘야함
-                    { field: 'NAME1', caption: '작성자', type: 'text' },			//세팅 해줘야함
-                ],
-                columns: [
-                    { field: 'IDX', caption: '번호', size: '50px', sortable: true, resizable: true, attr: 'align=center' },	//세팅 해줘야함
-                    { field: 'FILENAME0', caption: '썸네일', size: '50px', sortable: true, resizable: true, attr: 'align=center',	//세팅 해줘야함
-                        render: function(record) {
-                            if (record.FILENAME0 != null && record.FILENAME0 != '') {
-                                return '<img src="' + record.FILENAME0 + '" style="width: 30px; height: 30px;" />';
-                            }
-                        }
-                    },
-                    { field: 'TITLE', caption: '제목', size: '100%', min: 250, sortable: true, resizable: true, attr: 'align=left' },	//세팅 해줘야함
-                    { field: 'NAME1', caption: '작성자', size: '80px', resizable: true, sortable: true, attr: 'align=center' },	//세팅 해줘야함
-                    { field: 'WDATE', caption: '생성일', size: '80px', resizable: true, sortable: true, attr: 'align=center',
-                        render: function(rec) {
-                            return util_convert_to_millis(rec.WDATE);
-                        }
-                    },
-                    { field: 'LDATE', caption: '수정일', size: '80px', resizable: true, sortable: true, attr: 'align=center',
-                        render: function(rec) {
-                            return util_convert_to_millis(rec.LDATE);
-                        }
-                    },
-                ],
+        let fileLimitCount = 10;
+        let table = 'BOARD_tbl';
+        let grid1 = {
+            url: {
+                get: '/crud2/list?table=' + table + '&board_id=!{ board_id }&step=1',
+                remove: '/crud2/remove?table=' + table,
             },
-            form: {
-                name: 'form',
-                fields: [
-                    { field: 'TITLE', type: 'text', required: true },	//세팅 해줘야함
-                    { field: 'MEMO', type: 'textarea' },	//세팅 해줘야함
-                    { field: 'UPLOADED_FILES', type: 'enum', 
-                        options: {
-                            onRemove: function(e) {                                
-                                var filename = e.item.img.split('|')[0];
-                                var params = new URLSearchParams();
-                                params.append('filename', filename);
-                                axios.post('/crud/file_delete', params).then(function(res) {
-                                    console.dir(res.data);
-                                });
-                            }
-
-                        } 
-                    },	//세팅 해줘야함
-                    { field: 'FILES', type: 'file' },	//세팅 해줘야함
+            recid: 'idx',
+            limit: 20,
+            recordHeight: 30,
+            autoLoad: false,
+            name: 'grid1',
+            show: {
+                selectColumn: true,
+                footer: true,
+                toolbar: true,
+                toolbarDelete: true,
+            },
+            sortData: [{ field: 'idx', direction: 'DESC' }],
+            multiSelect: true,
+            multiSearch: true,
+            toolbar : {
+                items: [
+                    { type: 'button', id: 'copy', caption: '복사', img: 'icon-page' }
                 ],
-                actions: {
-                    reset: function () {
-                        this.clear();
-                        $("#save").text("입력");
-                    },
-                    save: function () {
-                        var errors = this.validate();
-                        if (errors.length > 0) {
+                onClick: function (target, data) {
+                    console.log(target);
+                    if (target == 'copy') {
+                        if (w2ui.grid1.getSelection().length == 0) {
+                            w2alert('체크된 항목이 없습니다.');
                             return;
                         }
-
-                        var fileCount = this.record.UPLOADED_FILES.length + this.record.FILES.length;
-                        if (fileCount > fileLimitCount) {
-                            w2alert('파일은 ' + fileLimitCount + '개까지 등록 가능합니다.');
+                        w2confirm('체크된 항목을 복사 하시겠습니까?').yes(function() {
+                            var params = new URLSearchParams();
+                            for (var i = 0; i < w2ui.grid1.getSelection().length; i++) {
+                                var value = w2ui.grid1.getSelection()[i];
+                                params.append('idx', value);
+                            }
+                            axios.post('/crud2/copy?table=' + table, params).then(function (res) {
+                                console.dir(res.data);
+                                w2ui.grid1.reload();
+                                formClear();
+                                $("#save").text("입력");
+                            });
+                        }).no(function() {
                             return;
-                        }
-
-                        for (var i = 0; i < fileLimitCount; i++) {
-                            try {
-                                eval("this.record.FILENAME"+parseInt(i)+" = this.record.UPLOADED_FILES["+i+"].img;");
-                            } catch (e) {
-                                eval("this.record.FILENAME"+parseInt(i)+" = '';");
-                            }
-                        }
-
-                        //- 세팅해줘야함.
-                        this.record.table = table;
-                        this.record.ID = "#{ myinfo.ID }";
-                        this.record.NAME1 = "#{ myinfo.NAME1 }";
-                        this.record.BOARD_ID = "#{ board_id }";
-                        //
-                        
-                        var formData = new FormData();
-                        var self = this;
-                        for (var key in this.record) {
-                            if (key != 'FILES') {
-                                formData.append(key, self.record[key]);
-                            }
-                        }
-                        
-                        for (var obj of this.record['FILES']) {
-                            formData.append('FILES', obj.file);                            
-                        }
-                        
-                        
-                        axios.post('/crud/write', formData).then(function(res) {
-                            console.dir(res.data);
-                            $("#save").text("입력");
-                            w2ui.form.clear();
-                            
-                            if (res.data.code == 1) {                                
-                                setTimeout(function(){
-                                    w2ui.grid.reload();
-                                }, 500);
-                            } else if (res.data.code == 2) {
-                                setTimeout(function(){
-                                    w2ui.grid.set(res.data.record.IDX, res.data.record, false);
-                                    w2ui.grid.selectNone();    
-                                }, 500);
-                            }
                         });
                     }
                 },
             },
-            onError: function(e) {
+            onError:function(e) {
                 console.log(e.xhr.responseText);
             },
+            onClick: function(e) {
+                if (e.column == null) {
+                    return;
+                }
+                e.onComplete = function () {
+                    let sel = w2ui.grid1.getSelection();
+                    if (sel.length == 1) {
+                        w2ui.form.recid = sel[0];
+                        formClear();
+                        w2ui.form.record = $.extend(true, {}, w2ui.grid1.get(sel[0]));
+                        
+                        $(".file_fields").html('');
+                        for (let i = 0; i < fileLimitCount; i++) {
+                            eval("var fileLink = w2ui.form.record.filename" + i);
+                            if (fileLink != '') {
+                                let html = createHtml(fileLink);
+                                $(".file_fields").append(html);
+                            }
+                        }
+                        
+                        w2ui.form.refresh();
+                        $("#save").text("수정");
+                        
+                        w2ui.grid2.url.get = '/crud2/list?table=' + table + '&step=2&parent_idx='+ w2ui.form.record.idx;
+                        w2ui.grid2.reload();
+                        w2ui.grid3.clear();
+                    } else {
+                        formClear();
+                        $("#save").text("입력");
+                    }
+                }
+            },
+            searches: [
+                { field: 'title', caption: '제목', type: 'text' },			//세팅 해줘야함
+                { field: 'name1', caption: '작성자', type: 'text' },			//세팅 해줘야함
+            ],
+            columns: [
+                { field: 'idx', caption: '번호', size: '50px', sortable: true, resizable: true, attr: 'align=center' },	//세팅 해줘야함
+                { field: 'filename0', caption: '썸네일', size: '50px', sortable: true, resizable: true, attr: 'align=center',	//세팅 해줘야함
+                    render: function(record) {
+                        if (record.filename0 != '') {
+                            return '<img src="' + record.filename0 + '" style="width: 50px; height: 30px; margin: -3px 0 0 -3px;" />';
+                        }
+                    }
+                },
+                { field: 'title', caption: '제목', size: '100%', min: 250, sortable: true, resizable: true, attr: 'align=left',
+                    render: function(record) {
+                        return `<a href='#' class='w2ui-btn' onclick='openReplyPopup("grid1", ${record.idx}, true);'>${record.title}</a>`;
+                    }
+                },
+                { field: 'name1', caption: '작성자', size: '80px', resizable: true, sortable: true, attr: 'align=center' },	//세팅 해줘야함
+                { field: 'created', caption: '생성일', size: '80px', resizable: true, sortable: true, attr: 'align=center',
+                    render: function(rec) {
+                        return util_convert_to_millis(rec.created);
+                    }
+                },
+                { field: 'modified', caption: '수정일', size: '80px', resizable: true, sortable: true, attr: 'align=center',
+                    render: function(rec) {
+                        return util_convert_to_millis(rec.modified);
+                    }
+                },
+            ],
         };
-        $(function () {
-            $('#grid').w2grid(config.grid);
-            $('#form').w2form(config.form);
+        let grid2 = {
+        	recid: 'idx',
+            url: {
+                remove: '/crud2/reply_delete?table=' + table,
+            },
+        	limit: 10,
+        	recordHeight: 30,
+        	autoLoad: false,
+            name: 'grid2',
+            show: {
+                selectColumn: true,
+                footer: true,
+                toolbar: true,
+                toolbarDelete: true,
+            },
+            sortData: [{ field: 'idx', direction: 'DESC' }],            
+        	onError:function(e){
+        		console.log(e.xhr.responseText);
+        	},
+        	onLoad: function(e) {
+        		console.log(e.xhr.responseText);
+        	},
+        	onClick: function(event) {
+        		if (event.column == null) {
+        			return;
+        		}
+        		event.onComplete = function () {
+        			var sel = w2ui.grid2.getSelection();
+                    console.log(sel);
+        			if (sel[0]) {
+        				w2ui.grid3.url.get = '/crud2/list?table=' + table + '&step=3&parent_idx='+ sel[0];
+        				w2ui.grid3.reload();
+        			}
+        		}
+        	},
+        	columns: [
+        		{ field: 'idx', caption: '번호', size: '50px', sortable: true, resizable: true, attr: 'align=center' },	//세팅 해줘야함
+        		{ field: 'filename0', caption: '썸네일', size: '50px', sortable: true, resizable: true, attr: 'align=center',	//세팅 해줘야함
+        			render: function(record) {
+        				if (record.filename0 != '') {
+        					return '<img src="' + record.filename0 + '" style="width: 50px; height: 30px;" />';
+        				}
+        			}
+        		},
+        		{ field: 'memo', caption: '내용', size: '100%', min: 250, sortable: true, resizable: true, attr: 'align=left',
+                    render: function(record) {
+                        return `<a href='#' class='w2ui-btn' onclick='openReplyPopup("grid2",${record.idx}, true);'>${record.memo}</a>`;
+                    }
+                },
+        		{ field: 'name1', caption: '작성자', size: '80px', resizable: true, sortable: true, attr: 'align=center' },	//세팅 해줘야함
+        		{ field: 'created', caption: '생성일', size: '80px', resizable: true, sortable: true, attr: 'align=center',
+                    render: function(rec) {
+                        return util_convert_to_millis(rec.created);
+                    }
+                },	//세팅 해줘야함
+        		{ field: 'modified', caption: '수정일', size: '80px', resizable: true, sortable: true, attr: 'align=center',
+                    render: function(rec) {
+                        return util_convert_to_millis(rec.modified);
+                    }
+                },
+        	],
+        };
+        let grid3 = {
+        	recid: 'idx',
+        	limit: 10,
+        	recordHeight: 30,
+        	autoLoad: false,
+            url: {
+                remove: '/crud2/reply_delete?table=' + table,
+            },
+        	name: 'grid3',
+        	multiSelect: true,
+        	show: {
+        		selectColumn: true,
+        		toolbar: true,
+        		toolbarDelete: true,
+        	},
+        	onError:function(e){
+        		console.log(e.xhr.responseText);
+        	},
+        	onLoad: function(e) {
+        		console.log(e.xhr.responseText);
+        	},
+        	onClick: function(event) {
+        		if (event.column == null) {
+        			return;
+        		}
+        		event.onComplete = function () {
+        			w2ui.grid3.selectNone();
+        		}
+        	},
+        	columns: [
+        		{ field: 'idx', caption: '번호', size: '50px', sortable: true, resizable: true, attr: 'align=center' },	//세팅 해줘야함
+        		{ field: 'filename0', caption: '썸네일', size: '50px', sortable: true, resizable: true, attr: 'align=center',	//세팅 해줘야함
+        			render: function(record) {
+        				if (record.filename0 != '') {
+        					return '<img src="' + record.filename0 + '" style="width: 50px; height: 30px;" />';
+        				}
+        			}
+        		},
+        		{ field: 'memo', caption: '내용', size: '100%', min: 250, sortable: true, resizable: true, attr: 'align=left' },	//세팅 해줘야함
+                { field: 'name1', caption: '작성자', size: '80px', resizable: true, sortable: true, attr: 'align=center' },	//세팅 해줘야함
+        		{ field: 'created', caption: '생성일', size: '80px', resizable: true, sortable: true, attr: 'align=center',
+                    render: function(rec) {
+                        return util_convert_to_millis(rec.created);
+                    }
+                },	//세팅 해줘야함
+        		{ field: 'modified', caption: '수정일', size: '80px', resizable: true, sortable: true, attr: 'align=center',
+                    render: function(rec) {
+                        return util_convert_to_millis(rec.modified);
+                    }
+                },
+        	],
+        };
+        let form = {
+            name: 'form',
+            fields: [
+                { field: 'title', type: 'text', required: true }, 
+                { field: 'memo', type: 'textarea' },
+            ],
+            actions: {
+                reset: function () {
+                    formClear();
+                    $("#save").text("입력");
+                },
+                save: function () {
+                    let errors = this.validate();
+                    if (errors.length > 0) {
+                        return;
+                    }
+                    // - 세팅해줘야함.
+                    this.record.table = table;
+                    this.record.id = "#{ myinfo.ID }";
+                    this.record.name1 = "#{ myinfo.NAME1 }";
+                    this.record.board_id = "#{ board_id }";
+                    //
+                    
+                    axios.post('/crud2/write', this.record).then(function (res) {
+                        console.dir(res.data);
+                        $("#save").text("입력");
+                        formClear();
+                        if (res.data.code == 1) {
+                            setTimeout(function () {
+                                w2ui.grid1.reload();
+                            }, 500);
+                        } else if (res.data.code == 2) {
+                            setTimeout(function () {
+                                w2ui.grid1.set(res.data.record.idx, res.data.record, false);
+                                w2ui.grid1.selectNone();
+                            }, 500);
+                        }
+                    });
+                }
+            },
+            onError: function (e) {
+                console.log(e.xhr.responseText);
+            }
+        };
+        let reply_form = {
+            name: 'reply_form',
+            style: 'border: 0px; background-color: transparent;',
+            formHTML:
+                '<div class="w2ui-page page-0">'+
+                '	<div class="w2ui-field w2ui-span2">'+
+                '		<label>내용</label>'+
+                '		<div><textarea name="memo" style="width: 100%; height: 150px;" disabled></textarea></div>'+
+                '	</div>'+
+                '	<div class="w2ui-field w2ui-span2">'+
+                '		<label>댓글</label>'+
+                '		<div><textarea name="memo2" style="width: 100%; height: 150px;"></textarea></div>'+
+                '	</div>'+
+                '</div>'+
+                '<div class="w2ui-buttons">'+
+                '	<button class="w2ui-btn" name="close">닫기</button>'+
+                '	<button class="w2ui-btn w2ui-btn-blue" name="save">입력</button>'+
+                '</div>'
+            ,
+            fields: [
+                { field: 'memo', type: 'textarea' }, 
+                { field: 'memo2', type: 'textarea', required: true },
+            ],
+            actions: {
+                close: function () {
+                    w2popup.close();
+                },
+                save: function () {
+                    let errors = this.validate();
+                    if (errors.length > 0) {
+                        return;
+                    }
+                    // - 세팅해줘야함.
+                    var object = {};
+                    object.table = table;
+                    object.id = "#{ myinfo.ID }";
+                    object.name1 = "#{ myinfo.NAME1 }";
+                    object.board_id = "#{ board_id }";
+                    object.step = this.record.step + 1;
+                    object.parent_idx = this.record.idx;
+                    object.memo = this.record.memo2;
+                    //
 
-            $('#FILES').w2field('file', {
-                max: fileLimitCount,
-                silent: true,
-            });
+                    axios.post('/crud2/write', object).then(function (res) {
+                        console.dir(res.data);
+                        setTimeout(function () {
+                            w2ui.grid2.reload();
+                            w2ui.grid3.reload();
+                        }, 200);
+                        w2popup.close();
+                    });
+                    
+                }
+            },
+            onError: function (e) {
+                console.log(e.xhr.responseText);
+            }
+        };
+        
+        $(function () {
+            $('#grid1').w2grid(grid1);
+            $('#grid2').w2grid(grid2);
+            $('#grid3').w2grid(grid3);
+            $('#form').w2form(form);
+            $('#reply_form').w2form(reply_form);
         });
+        function formClear() {
+            console.log("formClear");
+            w2ui.form.clear();
+            for (let i = 0; i < fileLimitCount; i++) {
+                eval("w2ui.form.record.filename"+i+"='';");
+        	}
+            $(".file_box").remove();
+        	w2ui.form.refresh();
+            w2ui.form.resize();
+        }
+        
+        function openReplyPopup(grid, idx, isAdd) {
+            console.log(grid);
+            if (grid == 'grid1') {
+                w2ui.reply_form.record = $.extend(true, {}, w2ui.grid1.get(idx));
+            } else {
+                w2ui.reply_form.record = $.extend(true, {}, w2ui.grid2.get(idx));
+            }
+            
+            $().w2popup('open', {
+                title   : '댓글달기',
+                body    : '<div id="reply_form" style="width: 100%; height: 100%;"></div>',
+                style   : 'padding: 0px 0px 0px 0px',
+                width   : 500,
+                height  : 500,
+                showMax : true,
+                onToggle: function (event) {
+                    $(w2ui.reply_form.box).hide();
+                    event.onComplete = function () {
+                        $(w2ui.reply_form.box).show();
+                        w2ui.reply_form.resize();
+                    }
+                },
+                onOpen: function (event) {
+                    event.onComplete = function () {
+                        $('#w2ui-popup #reply_form').w2render('reply_form');
+                    }
+                }
+            });
+        }
+        
+        function dragEnter(e) {
+            console.log("드래그 요소가 들어왔을떄", e);
+            $(".file_fields").addClass("bg-dark");
+        }
+        function dragLeave(i, e) {
+            console.log(i, "드래그 요소가 나갔을때");
+            $(".file_fields").removeClass("bg-dark");
+        }
+        function dragOver(e) {
+        	e.stopPropagation();
+            e.preventDefault();
+        }
+        function drop(e) {
+            console.log("드래그한 항목을 떨어뜨렸을때", e.dataTransfer.files);
+            e.preventDefault();
+            
+            let size = $('.file_box').length + e.dataTransfer.files.length;
+            
+            if (size > fileLimitCount) {
+                w2alert('파일은 ' + fileLimitCount + '개 까지 등록 가능합니다.');
+                $(".file_fields").removeClass("bg-dark");
+                return;
+            }
+            
+            for (file of e.dataTransfer.files) {
+                let formData = new FormData();
+                formData.append("upload_file", file, file.name);
+            	axios.post("http://images.lazulsoft.com/file_upload", formData).then(function(res) {
+            		console.dir(res.data);
+                    setTimeout(function() {
+                        let i = $('.file_box').length;                
+                        eval("w2ui.form.record.filename"+i+"='"+res.data.url+"';");
+                        let html = createHtml(res.data.url);
+                        $(".file_fields").append(html);
+                        $(".file_fields").removeClass("bg-dark");
+                        w2ui.form.resize();
+                    }, 100);
+                }).catch(function(err){
+                    console.log(err);
+                });
+            }
+        }
+        function deleteImage(obj) {
+            let i = $('.X').index(obj);
+            console.log(i);
+            $(".file_box").eq(i).remove();
+                        
+            //초기화
+            for (let i = 0; i < fileLimitCount; i++) {
+                eval("w2ui.form.record.filename"+i+"='';");
+        	}
+            
+            //파일 재정렬
+            $('.file_box').each(function(i) {
+                let src = $('.file_image').eq(i).attr('src');
+                eval("w2ui.form.record.filename"+i+"='"+src+"';");
+            });
+            //
+        }
+        function createHtml(url) {
+            let tmp = url.split('.');
+            let mimeType = tmp[tmp.length - 1];
+            
+            let html = `<div class='file_box p-0 mt-2 me-2' style='position: relative; width: 70px; height: 70px;'>`;
+            if ('jpg|jpeg|png|gif'.includes(mimeType)) {
+                html += `<img src='` + url + `' onclick=window.open('` + url + `') class='file_image img-thumbnail' style='width: 70px; height: 70px;' />`;
+            } else {
+                tmp = url.split('/');
+                let filename = tmp[tmp.length - 1];
+                html += `<div onclick=window.open('` + url + `') class='file_image img-thumbnail d-flex flex-wrap align-items-center' style='width: 70px; height: 70px;'><div>` + filename + ` </div></div>`;
+            }
+            html += `    <img src='/images/photo_x.png' onclick='deleteImage(this);' class='X', style='position: absolute; cursor: pointer; top: -10px; right: -9px; width: 25px; height: 25px;' />`;
+            html += `</div>`;
+            
+            return html;
+        }

@@ -200,42 +200,6 @@ router.get('/liveuser', checkMiddleWare, async function(req, res, next) {
 router.post('/liveuser', checkMiddleWare, async function(req, res, next) {
     var arr = new Array();
 
-    // await new Promise(function(resolve, reject) {
-    //     var sql = `SELECT * FROM sessions`;
-    //     db.query(sql, function(err, rows, fields) {
-    //         if (!err) {
-    //             resolve(rows);
-    //         } else {
-    //             resolve(err);
-    //         }
-    //     });
-    // }).then(function(data) {
-    //     // console.log(data);
-    //
-    //     for (obj of data) {
-    //         moment.tz.setDefault("Asia/Seoul");
-    //         var connTime = moment.unix(obj.expires).format('YYYY-MM-DD HH:mm');
-    //         var minDiff = moment.duration(moment(new Date()).diff(moment(connTime))).asMinutes();
-    //         if (minDiff > 4) {
-    //             db.query(`DELETE FROM sessions WHERE session_id = '?'`, obj.session_id);
-    //         } else {
-    //             var json = JSON.parse(obj.data);
-    //
-    //             arr.push({
-    //                 'id': obj.session_id,
-    //                 'url': json.cookie.path,
-    //                 'date': connTime,
-    //             });
-    //         }
-    //     }
-    //
-    //     var result = {
-    //         currentTime: moment().format('YYYY-MM-DD HH:mm'),
-    //         list: arr,
-    //     }
-    //     res.send(result);
-    // });
-
     fs.readdir('./liveuser', async function(err, filelist) {
         for (file of filelist) {
             await new Promise(function(resolve, reject) {
