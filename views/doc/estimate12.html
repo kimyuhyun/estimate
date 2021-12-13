@@ -34,13 +34,13 @@
 
     <div class="d-flex flex-row justify-content-between mb-4">
         <div class="d-flex w-25"></div>
-        <h1 class="d-flex w-50 justify-content-center mb-0">견 적 서</h1>
+        <h1 class="d-flex w-50 justify-content-center mb-0">Online Quote</h1>
         <div class="d-flex w-25 align-items-end justify-content-end"><u>No. <%=my.docNum%></u></div>
     </div>
 
     <div class="d-flex flex-row">
         <div class="d-flex flex-column justify-content-between w-50">
-            <div class="align-self-left"><%=your.EDATE%></div>
+            <div class="align-self-left"><%=your.EN_EDATE%></div>
             <div class="d-flex flex-row justify-content-between w-75 align-self-left" style="border-bottom: 1px dotted #333;">
                 <h4 class="mb-0"><b><%=your.COMPANY%></b></h4>
                 <div>귀중</div>
@@ -70,7 +70,6 @@
             </div>
             <table>
                 <tr>
-                    <td rowspan="5" class="text-center bg-light">공<br><br>급<br><br>자</td>
                     <td colspan="4" class="p-0">
                         <table style="border: 0px;">
                             <tr>
@@ -83,9 +82,9 @@
                 </tr>
 
                 <tr>
-                    <td class="text-center bg-light">상호</td>
+                    <td class="text-center bg-light">Company name</td>
                     <td><b><%=my.COMPANY%></b></td>
-                    <td class="text-center bg-light">성명</td>
+                    <td class="text-center bg-light">Representative</td>
                     <td><%=my.NAME1%></td>
                 </tr>
 

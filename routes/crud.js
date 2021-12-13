@@ -59,45 +59,45 @@ router.post('/list', checkMiddleWare, async function(req, res, next) {
     // console.log(params);
 
     var records = 0;
-    var sql = "";
-    var where = " WHERE 1=1 ";
-    var orderby = "";
+    var sql = '';
+    var where = ' WHERE 1=1 ';
+    var orderby = '';
     var start = params.offset == null ? 0 : params.offset;
     var rows = params.limit;
 
     if (board_id != null) {
-        where += " AND BOARD_ID = '" + board_id + "'";
+        where += ` AND BOARD_ID = '${board_id}' `;
     }
 
     if (level1 != null) {
-        where += " AND LEVEL1 = " + level1;
+        where += ` AND LEVEL1 = ${level1} `;
     }
 
     if (params.search != null) {
-        var tmp = "";
+        var tmp = '';
         for (var i in params.search) {
             if (i > 0) {
-                tmp += " OR ";
+                tmp += ' OR ';
             }
-            tmp += params.search[i].field + " LIKE '%" + params.search[i].value + "%'";
+            if (params.search[i].field) {
+                tmp += ` ${params.search[i].field} LIKE '%${params.search[i].value}%' `;
+            }
         }
-        where += "AND (" + tmp + ")";
+        where += ` AND (${tmp}) `;
     }
 
-
-    var sql = "SELECT COUNT(*) as CNT FROM " + table + where;
+    var sql = ` SELECT COUNT(*) as CNT FROM ${table} ${where} `;
     await db.query(sql, function(err, rows, fields) {
         records = rows[0].CNT;
     });
 
 
     if (params.sort != null) {
-        orderby = " ORDER BY " + params.sort[0].field + " " + params.sort[0].direction;
+        orderby = ` ORDER BY ${params.sort[0].field} ${params.sort[0].direction} `;
     } else {
-        orderby = " ORDER BY IDX DESC ";
+        orderby = ` ORDER BY IDX DESC `;
     }
-
-    sql = "SELECT * FROM " + table + where + orderby + " LIMIT " + start + ", " + rows;
+    sql = `SELECT * FROM ${table} ${where} ${orderby} LIMIT ${start}, ${rows} `;
     console.log(sql);
     await db.query(sql, function(err, rows, fields) {
         var arr = new Object();

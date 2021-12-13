@@ -39,8 +39,12 @@ router.get('/:IDX', async function(req, res, next) {
         sourceId = data.MEMB_ID;
 
         your = data;
+        your.EN_EDATE = moment(data.EDATE).format('YYYY-MM-DD');
         your.EDATE = moment(data.EDATE).format('YYYY년 MM월 DD일');
+
     });
+
+    console.log(your.EN_EDATE);
 
     //문서번호 생성하기
     sql = "SELECT IDX FROM DOC_tbl WHERE MEMB_ID = ?";
