@@ -7,12 +7,10 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
 <style>
-table { font-size: 14px; }
+table { font-size: 12px; }
 </style>
 
-<script src="/javascripts/textFit.js"></script>
-
-<body class="p-1">
+<body class="p-0">
 <%
     if (my.FILENAME1 != '') {
 %>
@@ -26,20 +24,22 @@ table { font-size: 14px; }
 <%
     if (my.FILENAME0 != '') {
 %>
-    <div style="position: absolute; top: 145px; left: 700px;">
+    <div style="position: absolute; top: 145px; left: 800px;">
         <img src="<%=my.FILENAME0%>" height="40"/>
     </div>
 <%
     }
 %>
 
-    <table cellspacing="0" cellpadding="0" class="w-100" style="font-size: 14px;">
-        <tr><td colspan="2" class="text-center"><b style="font-size: 50px;">견&nbsp;&nbsp;&nbsp;적&nbsp;&nbsp;&nbsp;서</b></td></tr>
-        <tr><td colspan="2" style="border-bottom: 1px solid #000;">No. <%=my.docNum%></td></tr>
+    <table cellspacing="0" cellpadding="0" class="w-100">
+        <tr><td class="text-center"><b style="font-size: 50px;">견&nbsp;&nbsp;&nbsp;적&nbsp;&nbsp;&nbsp;서</b></td></tr>
+        <tr><td style="border-bottom: 1px solid #000;">No. <%=my.docNum%></td></tr>
+    </table>
 
+    <table cellspacing="0" cellpadding="0" class="w-100">
         <tr>
-            <td style="min-width: 500px;" valign="top">
-                <h4 class="mt-3"><%=your.COMPANY%> 귀중</h4>
+            <td style="min-width: 550px;" valign="top">
+                <h3 class="mt-3"><%=your.COMPANY%> 귀중</h3>
                 <table>
                     <tr>
                         <th width="60" class="d-flex justify-content-between">
@@ -57,7 +57,7 @@ table { font-size: 14px; }
                             <div>일</div>
                         </th>
                         <td></td>
-                        <td><%=your.DLV%></td>
+                        <td class="auto_text_size"><%=your.DLV%></td>
                     </tr>
 
                     <tr>
@@ -67,7 +67,7 @@ table { font-size: 14px; }
                             <div>일</div>
                         </th>
                         <td></td>
-                        <td><%=your.AVA%></td>
+                        <td class="auto_text_size"><%=your.AVA%></td>
                     </tr>
 
                     <tr>
@@ -78,7 +78,7 @@ table { font-size: 14px; }
                             <div>용</div>
                         </th>
                         <td></td>
-                        <td><%=your.CONTENT%></td>
+                        <td class="auto_text_size"><%=your.CONTENT%></td>
                     </tr>
 
                     <tr>
@@ -87,7 +87,7 @@ table { font-size: 14px; }
                             <div>조</div>
                         </th>
                         <td></td>
-                        <td><%=your.REFER%></td>
+                        <td class="auto_text_size"><%=your.REFER%></td>
                     </tr>
 
                     <tr>
@@ -96,7 +96,7 @@ table { font-size: 14px; }
                             <div>고</div>
                         </th>
                         <td></td>
-                        <td><%=your.ETC%></td>
+                        <td class="auto_text_size"><%=your.ETC%></td>
                     </tr>
 
                     <tr>
@@ -107,7 +107,7 @@ table { font-size: 14px; }
                             <div>호</div>
                         </th>
                         <td></td>
-                        <td><%=your.TEL%></td>
+                        <td class="auto_text_size"><%=your.TEL%></td>
                     </tr>
                     <tr>
                         <th class="d-flex justify-content-between">
@@ -117,7 +117,7 @@ table { font-size: 14px; }
                             <div>호</div>
                         </th>
                         <td></td>
-                        <td><%=your.FAX%></td>
+                        <td class="auto_text_size"><%=your.FAX%></td>
                     </tr>
                     <tr>
                         <th class="d-flex justify-content-between">
@@ -126,14 +126,14 @@ table { font-size: 14px; }
                             <div>일</div>
                         </th>
                         <td></td>
-                        <td><%=your.EMAIL%></td>
+                        <td class="auto_text_size"><%=your.EMAIL%></td>
                     </tr>
                 </table>
                 <br>
                 <div style="font-size: 18px;">아래와 같이 견적합니다.</div>
             </td>
-            <td style="min-width: 500px;" valign="top">
-                <h4 class="mt-3"><%=my.COMPANY%></h4>
+            <td style="min-width: 450px;" valign="top">
+                <h3 class="mt-3"><%=my.COMPANY%></h3>
                 <table>
                     <tr>
                         <th width="60" class="d-flex justify-content-between">
@@ -177,7 +177,7 @@ table { font-size: 14px; }
                             <div>호</div>
                         </th>
                         <td></td>
-                        <td>
+                        <td class="auto_text_size">
                             <%=my.TEL==''?'':'T: '+my.TEL%>
                             <%=my.FAX==''?'':'F: '+my.FAX%>
                         </td>
@@ -188,7 +188,7 @@ table { font-size: 14px; }
                             <div>소</div>
                         </th>
                         <td></td>
-                        <td><%=my.ADDR1%> <%=my.ADDR2%></td>
+                        <td class="auto_text_size"><%=my.ADDR1%> <%=my.ADDR2%></td>
                     </tr>
 
                     <tr>
@@ -208,7 +208,7 @@ table { font-size: 14px; }
                             <div>처</div>
                         </th>
                         <td></td>
-                        <td>
+                        <td class="auto_text_size">
                             <%=my.HP==''?'':'M: '+my.HP%>
                             <%=my.EMAIL==''?'':'E: '+my.EMAIL%>
                         </td>
@@ -217,7 +217,7 @@ table { font-size: 14px; }
             </td>
         </tr>
 
-        <tr><td colspan="2" style="border-bottom: 1px solid #000; height: 30px;"></td></tr>
+        <tr><td colspan="2" style="border-bottom: 1px solid #000; height: 10px;"></td></tr>
         <tr style="height: 50px; ">
             <td>
                 <h5>
@@ -261,21 +261,21 @@ table { font-size: 14px; }
 <%
     if (obj.FILENAME0 != '') {
 %>
-                        <td class="p-0"><img src="<%=obj.FILENAME0%>" height="50"/> <%=obj.NAME1%></td>
+                        <td class="p-0 auto_text_size"><img src="<%=obj.FILENAME0%>" height="50"/> <%=obj.NAME1%></td>
 <%
     } else {
 %>
-                        <td><%=obj.NAME1%></td>
+                        <td class="auto_text_size"><%=obj.NAME1%></td>
 <%
     }
 %>
-                        <td align="center" valign="middle"><%=obj.GUKUK%></td>
-                        <td align="center" valign="middle"><%=obj.UNIT%></td>
+                        <td class="auto_text_size" align="center" valign="middle"><%=obj.GUKUK%></td>
+                        <td class="auto_text_size" align="center" valign="middle"><%=obj.UNIT%></td>
                         <td class="text-center" valign="middle"><%=obj.QTY.toLocaleString()%></td>
-                        <td class="text-end" valign="middle"><%=obj.DANGA.toLocaleString()%></td>
-                        <td class="text-end" valign="middle"><%=obj.PRICE.toLocaleString()%></td>
-                        <td class="text-end" valign="middle"><%=obj.TAX.toLocaleString()%></td>
-                        <td class="text-end" valign="middle"><%=(obj.PRICE + obj.TAX).toLocaleString()%></td>
+                        <td class="text-end auto_text_size" valign="middle"><%=obj.DANGA.toLocaleString()%></td>
+                        <td class="text-end auto_text_size" valign="middle"><%=obj.PRICE.toLocaleString()%></td>
+                        <td class="text-end auto_text_size" valign="middle"><%=obj.TAX.toLocaleString()%></td>
+                        <td class="text-end auto_text_size" valign="middle"><%=(obj.PRICE + obj.TAX).toLocaleString()%></td>
                     </tr>
 <%
         priceSum = priceSum + obj.PRICE;
@@ -283,10 +283,10 @@ table { font-size: 14px; }
     }
 %>
                     <tr>
-                        <td align="center" colspan="6"><b>합계</b></td>
-                        <td class="text-end"><b><%=priceSum.toLocaleString()%></b></td>
-                        <td class="text-end"><b><%=taxSum.toLocaleString()%></b></td>
-                        <td class="text-end"><b><%=(priceSum + taxSum).toLocaleString()%></b></td>
+                        <td class="auto_text_size" align="center" colspan="6"><b>합계</b></td>
+                        <td class="text-end auto_text_size"><b><%=priceSum.toLocaleString()%></b></td>
+                        <td class="text-end auto_text_size"><b><%=taxSum.toLocaleString()%></b></td>
+                        <td class="text-end auto_text_size"><b><%=(priceSum + taxSum).toLocaleString()%></b></td>
                     </tr>
 
 
@@ -298,12 +298,10 @@ table { font-size: 14px; }
     </table>
 
     <!-- <%=your.MEMO%> -->
+
+    <script src="/javascripts/textFit.js"></script>
+    <script>
+        textFit(document.getElementsByClassName('auto_text_size'));
+    </script>
 </body>
 </html>
-
-<script>
-setTimeout(function() {
-    textFit(document.getElementsByClassName('box'), {minFontSize:10, maxFontSize: 50});
-}, 100);
-
-</script>

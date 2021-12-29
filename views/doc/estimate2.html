@@ -20,7 +20,7 @@
     </style>
 
 <body class="p-0 m-0">
-    <div style="position: absolute; top: 90px; right: 0px;">
+    <div style="position: absolute; top: 100px; right: 0px;">
         <% if (my.FILENAME0 != '') { %>
             <img src="<%=my.FILENAME0%>" height="35"/>
         <% } %>
@@ -39,9 +39,9 @@
     </div>
 
     <div class="d-flex flex-row">
-        <div class="d-flex flex-column justify-content-between w-50">
+        <div class="d-flex flex-column justify-content-between" style="width: 45%;">
             <div class="align-self-left"><%=your.EDATE%></div>
-            <div class="d-flex flex-row justify-content-between w-75 align-self-left" style="border-bottom: 1px dotted #333;">
+            <div class="d-flex flex-row justify-content-between align-self-left" style="border-bottom: 1px dotted #333; width: 90%;">
                 <h4 class="mb-0"><b><%=your.COMPANY%></b></h4>
                 <div>귀중</div>
             </div>
@@ -62,50 +62,61 @@
             <div>아래와 같이 견적 합니다.</div>
         </div>
 
-        <div class="d-flex flex-column w-50">
-            <div style="font-size: 12px;">
+        <div class="d-flex flex-column" style="width: 55%;">
+            <div style="font-size: 12px;" class="auto_text_size">
                 <span class="me-1">담당자: <%=my.MANAGER%></span>
                 <span class="me-1">M: <%=my.HP%></span>
                 <span class="me-1">E: <%=my.EMAIL%></span>
             </div>
             <table>
                 <tr>
-                    <td rowspan="5" class="text-center bg-light">공<br><br>급<br><br>자</td>
+                    <td width=24 rowspan="5" class="text-center bg-light auto_text_size">공<br><br>급<br><br>자</td>
                     <td colspan="4" class="p-0">
                         <table style="border: 0px;">
                             <tr>
-                                <td class="bg-light" style="width: 100px; border: 0px;">사업자 등록번호</td>
-                                <td style="border: 0px; border-left: 1px solid #aaaaaa;"><%=my.CNUM%></td>
+                                <td class="bg-light auto_text_size" style="width: 100px; border: 0px;">사업자 등록번호</td>
+                                <td class="auto_text_size" style="border: 0px; border-left: 1px solid #aaaaaa;"><%=my.CNUM%></td>
                             </tr>
                         </table>
-
                     </td>
                 </tr>
 
                 <tr>
                     <td class="text-center bg-light">상호</td>
-                    <td><b><%=my.COMPANY%></b></td>
+                    <td class="auto_text_size"><b><%=my.COMPANY%></b></td>
                     <td class="text-center bg-light">성명</td>
-                    <td><%=my.NAME1%></td>
+                    <td class="auto_text_size"><%=my.NAME1%></td>
                 </tr>
 
                 <tr>
                     <td class="text-center bg-light">주소</td>
-                    <td colspan="3">(<%=my.ZIPCODE%>) <%=my.ADDR1%> <%=my.ADDR2%></td>
+                    <td class="auto_text_size" colspan="3">
+<%
+    if (my.ZIPCODE == '') {
+%>
+        <%=my.ADDR1%> <%=my.ADDR2%>
+<%
+    } else {
+%>
+        (<%=my.ZIPCODE%>) <%=my.ADDR1%> <%=my.ADDR2%>
+<%
+    }
+%>                        
+                    </td>
                 </tr>
 
                 <tr>
                     <td class="text-center bg-light">업태</td>
-                    <td><%=my.UPTAE%></td>
+                    <td class="auto_text_size"><%=my.UPTAE%></td>
                     <td class="text-center bg-light">종목</td>
-                    <td><%=my.JONGMOK%></td>
+                    <td class="auto_text_size"><%=my.JONGMOK%></td>
                 </tr>
 
                 <tr>
                     <td class="text-center bg-light">TEL</td>
-                    <td><%=my.TEL%></td>
+                    <td class="auto_text_size"><%=my.TEL%></td>
                     <td class="text-center bg-light">FAX</td>
-                    <td><%=my.FAX%></td>
+                    <td class="auto_text_size"><%=my.FAX%></td>
                 </tr>
 
             </table>
@@ -118,7 +129,7 @@
     </div>
 
     <table>
-        <tr class="text-center" style="background: #eeeeee; height: 40px;">
+        <tr class="text-center" style="background: #eeeeee; height: 30px;">
             <td width="20">No.</td>
             <td>품명</td>
             <td>규격</td>
@@ -129,9 +140,6 @@
             <td>세액</td>
             <td>합계</td>
         </tr>
-        <tr>
-            <td colspan="9" class="p-0"></td>
-        </tr>
 <%
     var priceSum = 0;
     var taxSum = 0;
@@ -141,14 +149,14 @@
 %>
         <tr>
             <td align="center"><%=i%></td>
-            <td><%=obj.NAME1%></td>
-            <td align="center"><%=obj.GUKUK%></td>
-            <td align="center"><%=obj.UNIT%></td>
-            <td class="text-end"><%=obj.QTY.toLocaleString()%></td>
-            <td class="text-end"><%=obj.DANGA.toLocaleString()%></td>
-            <td class="text-end"><%=obj.PRICE.toLocaleString()%></td>
-            <td class="text-end"><%=obj.TAX.toLocaleString()%></td>
-            <td class="text-end"><%=(obj.PRICE + obj.TAX).toLocaleString()%></td>
+            <td class="auto_text_size"><%=obj.NAME1%></td>
+            <td class="auto_text_size" align="center"><%=obj.GUKUK%></td>
+            <td class="auto_text_size" align="center"><%=obj.UNIT%></td>
+            <td class="auto_text_size text-end"><%=obj.QTY.toLocaleString()%></td>
+            <td class="auto_text_size text-end"><%=obj.DANGA.toLocaleString()%></td>
+            <td class="auto_text_size text-end"><%=obj.PRICE.toLocaleString()%></td>
+            <td class="auto_text_size text-end"><%=obj.TAX.toLocaleString()%></td>
+            <td class="auto_text_size text-end"><%=(obj.PRICE + obj.TAX).toLocaleString()%></td>
         </tr>
 <%
         priceSum = priceSum + obj.PRICE;
@@ -162,9 +170,9 @@
             <td></td>
             <td></td>
             <td></td>
-            <td class="text-end"><b><%=priceSum.toLocaleString()%></b></td>
-            <td class="text-end"><b><%=taxSum.toLocaleString()%></b></td>
-            <td class="text-end"><b><%=(priceSum + taxSum).toLocaleString()%></b></td>
+            <td class="auto_text_size text-end"><b><%=priceSum.toLocaleString()%></b></td>
+            <td class="auto_text_size text-end"><b><%=taxSum.toLocaleString()%></b></td>
+            <td class="auto_text_size text-end"><b><%=(priceSum + taxSum).toLocaleString()%></b></td>
         </tr>
 <%
 
@@ -190,23 +198,27 @@
 %>
         <tr>
             <td align="center" rowspan="4">견<br>적<br>내<br>용</td>
-            <td rowspan="4" colspan="4" valign="top"><%=your.CONTENT%></td>
+            <td class="auto_text_size" rowspan="4" colspan="4" valign="top"><%=your.CONTENT%></td>
             <td align="center">비고</td>
-            <td align="left" colspan="3"><%=your.ETC%></td>
+            <td class="auto_text_size" align="left" colspan="3"><%=your.ETC%></td>
         </tr>
         <tr>
             <td align="center">유효일</td>
-            <td align="left" colspan="3"><%=your.AVA%></td>
+            <td class="auto_text_size" align="left" colspan="3"><%=your.AVA%></td>
         </tr>
         <tr>
             <td align="center">납기일</td>
-            <td align="left" colspan="3"><%=your.DLV%></td>
+            <td class="auto_text_size" align="left" colspan="3"><%=your.DLV%></td>
         </tr>
         <tr>
             <td align="center">참조</td>
-            <td align="left" colspan="3"><%=your.REFER%></td>
+            <td class="auto_text_size" align="left" colspan="3"><%=your.REFER%></td>
         </tr>
     </table>
 </body>
-
 </html>
+
+<script src="/javascripts/textFit.js?v=<%=new Date().getTime()%>"></script>
+<script>
+    textFit(document.getElementsByClassName('auto_text_size'));
+</script>

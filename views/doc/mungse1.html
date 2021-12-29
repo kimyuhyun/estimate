@@ -7,7 +7,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 <link href="/stylesheets/doc.css" rel="stylesheet">
 
-<body class="p-1">
+<body class="p-0">
 <%
     if (my.FILENAME0 != '') {
 %>
@@ -26,13 +26,12 @@
                 <table cellspacing="0" cellpadding="0">
                     <tr>
                         <th width="80" class="LineRight">거래일자</th>
-                        <td class="LineRight text-center"><%=your.EDATE%></td>
+                        <td class="LineRight text-center auto_text_size"><%=your.EDATE%></td>
                         <th class="LineRight d-flex flex-row align-items-center justify-content-center">
                             <h3 class="mb-0">거 래 명 세 표</h3>(공급받는자 보관용)
                         </th>
                         <th width="80" class="LineRight">일련번호</th>
-                        <td class="text-center"><%=my.docNum%></td>
-
+                        <td class="text-center auto_text_size"><%=my.docNum%></td>
                     </tr>
                 </table>
             </td>
@@ -45,28 +44,28 @@
                         <td width="50%">
                             <table>
                                 <tr>
-                                    <th rowspan="4" class="LineRight" width=20>공<br>급<br>받<br>는<br>자</th>
-                                    <th class="LineRight" style="line-height: 12px;">등록<br>번호</th>
-                                    <td colspan="4" class="LineRight text-center"><%=your.CNUM%></td>
+                                    <th rowspan="4" class="LineRight" width=30>공<br>급<br>받<br>는<br>자</th>
+                                    <th class="LineRight auto_text_size" style="line-height: 12px;">등록<br>번호</th>
+                                    <td colspan="4" class="LineRight text-center auto_text_size"><%=your.CNUM%></td>
                                 </tr>
 
                                 <tr class="LineTop">
                                     <th width=30 height=26 class="LineRight">상호</th>
-                                    <td class="LineRight ps-1"><%=your.COMPANY%></td>
+                                    <td class="LineRight ps-1 auto_text_size"><%=your.COMPANY%></td>
                                     <th width=30 class="LineRight">성명</td>
-                                    <td class="LineRight ps-1"><%=your.NAME1%></td>
+                                    <td class="LineRight ps-1 auto_text_size" style="min-width: 30px;"><%=your.NAME1%></td>
                                 </tr>
 
                                 <tr class="LineTop">
                                     <th width=30 height=26 class="LineRight">주소</th>
-                                    <td colspan="3" class="LineRight ps-1"><%=your.ADDR1%> <%=your.ADDR2%></td>
+                                    <td colspan="3" class="LineRight ps-1 auto_text_size"><%=your.ADDR1%> <%=your.ADDR2%></td>
                                 </tr>
 
                                 <tr class="LineTop">
                                     <th width=30 height=26 class="LineRight">TEL</th>
-                                    <td class="LineRight ps-1"><%=your.TEL%></td>
+                                    <td class="LineRight ps-1 auto_text_size"><%=your.TEL%></td>
                                     <th width=30 class="LineRight">FAX</th>
-                                    <td class="LineRight ps-1"><%=your.FAX%></td>
+                                    <td class="LineRight ps-1 auto_text_size"><%=your.FAX%></td>
                                 </tr>
 
                             </table>
@@ -74,25 +73,25 @@
                         <td valign="top">
                             <table>
                                 <tr>
-                                    <th rowspan="4" class="LineRight" width=20>공<br>급<br>자</th>
-                                    <th class="LineRight" style="line-height: 12px;">등록<br>번호</th>
-                                    <td colspan="4" class=" text-center"><%=my.CNUM%></td>
+                                    <th rowspan="4" class="LineRight auto_text_size" width=30>공<br>급<br>자</th>
+                                    <th class="LineRight auto_text_size" style="line-height: 12px;">등록<br>번호</th>
+                                    <td colspan="4" class="text-center auto_text_size"><%=my.CNUM%></td>
                                 </tr>
-                                <tr class="LineTop">
-                                    <th width=30 height=26 class="LineRight">상호</th>
-                                    <td class="LineRight ps-1"><%=my.COMPANY%></td>
+                                <tr class="LineTop" height=26>
+                                    <th width=30 class="LineRight">상호</th>
+                                    <td class="LineRight ps-1 auto_text_size"><%=my.COMPANY%></td>
                                     <th width=30 class="LineRight">성명</td>
-                                    <td class="ps-1"><%=my.NAME1%></td>
+                                    <td class="ps-1 auto_text_size"><%=my.NAME1%></td>
                                 </tr>
-                                <tr class="LineTop">
-                                    <th width=30 height=26 class="LineRight">주소</th>
-                                    <td colspan="3" class="ps-1"><%=my.ADDR1%> <%=my.ADDR2%></td>
+                                <tr class="LineTop" height=26>
+                                    <th width=30 class="LineRight">주소</th>
+                                    <td colspan="3" class="ps-1 auto_text_size"><%=my.ADDR1%> <%=my.ADDR2%></td>
                                 </tr>
-                                <tr class="LineTop">
-                                    <th width=30 height=26 class="LineRight">TEL</th>
-                                    <td class="LineRight ps-1"><%=my.TEL%></td>
+                                <tr class="LineTop" height=26>
+                                    <th width=30 class="LineRight">TEL</th>
+                                    <td class="LineRight ps-1 auto_text_size"><%=my.TEL%></td>
                                     <th width=30 class="LineRight">FAX</th>
-                                    <td class="ps-1"><%=my.FAX%></td>
+                                    <td class="ps-1 auto_text_size"><%=my.FAX%></td>
                                 </tr>
                             </table>
                         </td>
@@ -128,14 +127,14 @@
 %>
         <tr class="LineTop" style="height: 24px; background: <%=bg%>;">
             <td class="LineRight text-center"><%=i%></td>
-            <td class="LineRight ps-1"><%=obj.NAME1%></td>
-            <td class="LineRight ps-1"><%=obj.GUKUK%></td>
-            <td class="LineRight text-center"><%=obj.UNIT%></td>
-            <td class="LineRight text-center"><%=obj.QTY.toLocaleString()%></td>
-            <td class="LineRight pe-1 text-end"><%=obj.DANGA.toLocaleString()%></td>
-            <td class="LineRight pe-1 text-end"><%=obj.PRICE.toLocaleString()%></td>
-            <td class="LineRight pe-1 text-end"><%=obj.TAX.toLocaleString()%></td>
-            <td class="pe-1 text-end"><%=(obj.PRICE + obj.TAX).toLocaleString()%></td>
+            <td class="LineRight ps-1 auto_text_size"><%=obj.NAME1%></td>
+            <td class="LineRight ps-1 auto_text_size"><%=obj.GUKUK%></td>
+            <td class="LineRight text-center auto_text_size"><%=obj.UNIT%></td>
+            <td class="LineRight text-center auto_text_size"><%=obj.QTY.toLocaleString()%></td>
+            <td class="LineRight pe-1 text-end auto_text_size"><%=obj.DANGA.toLocaleString()%></td>
+            <td class="LineRight pe-1 text-end auto_text_size"><%=obj.PRICE.toLocaleString()%></td>
+            <td class="LineRight pe-1 text-end auto_text_size"><%=obj.TAX.toLocaleString()%></td>
+            <td class="pe-1 text-end auto_text_size"><%=(obj.PRICE + obj.TAX).toLocaleString()%></td>
         </tr>
 <%
         priceSum = priceSum + obj.PRICE;
@@ -184,5 +183,10 @@
     </table>
 
     <%=your.ETC%>
+
+    <script src="/javascripts/textFit.js"></script>
+    <script>
+        textFit(document.getElementsByClassName('auto_text_size'));
+    </script>
 </body>
 </html>
