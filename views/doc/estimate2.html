@@ -101,7 +101,7 @@
         (<%=my.ZIPCODE%>) <%=my.ADDR1%> <%=my.ADDR2%>
 <%
     }
-%>                        
+%>
                     </td>
                 </tr>
 
@@ -124,8 +124,8 @@
     </div>
 
     <div class="d-flex flex-row justify-content-between mt-5 mb-1">
-        <h4 class="mb-0">견적금액<%=your.IS_VAT==0?'(VAT포함)':'(VAT별도)'%></h4>
-        <h4 class="mb-0">일금 <%=my.HAN_PRICE%> 원정 (￦<%=my.TTL_PRICE.toLocaleString()%>)</h4>
+        <div style="font-size: 20px;">견적금액<%=your.IS_VAT==0?'(VAT포함)':'(VAT별도)'%></div>
+        <div style="font-size: 20px;"><b>일금 <%=my.HAN_PRICE%> 원정 (￦<%=my.TTL_PRICE.toLocaleString()%>)</b></div>
     </div>
 
     <table>
