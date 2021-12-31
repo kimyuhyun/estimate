@@ -411,7 +411,7 @@ router.get('/doc_child_delete/:ID/:PARENT_IDX', checkMiddleWare, async function(
 //빠른견적 리스트
 router.get('/quick/:ID', checkMiddleWare, function(req, res, next) {
     var id = req.params.ID;
-    var sql = `SELECT IDX, EDATE, COMPANY, TTL_PRICE FROM QUICK_tbl WHERE MEMB_ID = ? ORDER BY EDATE DESC`;
+    var sql = `SELECT IDX, EDATE, COMPANY, TTL_PRICE, IS_VAT FROM QUICK_tbl WHERE MEMB_ID = ? ORDER BY EDATE DESC`;
     db.query(sql, id, function(err, rows, fields) {
         if (!err) {
             res.send(utils.nvl(rows));
@@ -430,7 +430,7 @@ router.get('/quick/:ID/:IDX', checkMiddleWare, async function(req, res, next) {
     var obj = {};
 
     await new Promise(function(resolve, reject) {
-        const sql = `SELECT EDATE, COMPANY, TTL_PRICE, CSV FROM QUICK_tbl WHERE MEMB_ID = ? AND IDX = ?`;
+        const sql = `SELECT EDATE, COMPANY, TTL_PRICE, CSV, IS_VAT FROM QUICK_tbl WHERE MEMB_ID = ? AND IDX = ?`;
         db.query(sql, [id, idx], function(err, rows, fields) {
             if (!err) {
                 resolve(rows[0]);
