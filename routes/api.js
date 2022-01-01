@@ -112,9 +112,14 @@ router.get('/is_memb/:ID', checkMiddleWare, function(req, res, next) {
     var id = req.params.ID;
     var sql = `SELECT CNUM FROM MEMB_tbl WHERE ID = ?`;
     db.query(sql, id, function(err, rows, fields) {
-        // console.log(rows);
+        console.log(rows);
         if (!err) {
-            res.send(rows[0]);
+            if (rows[0]) {
+                res.send(rows[0]);
+            } else {
+                res.send({ CNUM: '' });
+            }
+
         } else {
             res.send(err);
         }
