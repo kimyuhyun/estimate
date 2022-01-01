@@ -114,7 +114,7 @@ router.get('/is_memb/:ID', checkMiddleWare, function(req, res, next) {
     db.query(sql, id, function(err, rows, fields) {
         // console.log(rows);
         if (!err) {
-            res.send(rows[0].cnt);
+            res.send(rows[0]);
         } else {
             res.send(err);
         }
