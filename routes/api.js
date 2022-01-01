@@ -110,7 +110,7 @@ async function checkMiddleWare(req, res, next) {
 
 router.get('/is_memb/:ID', checkMiddleWare, function(req, res, next) {
     var id = req.params.ID;
-    var sql = `SELECT COUNT(*) as cnt FROM MEMB_tbl WHERE ID = ?`;
+    var sql = `SELECT CNUM FROM MEMB_tbl WHERE ID = ?`;
     db.query(sql, id, function(err, rows, fields) {
         // console.log(rows);
         if (!err) {
