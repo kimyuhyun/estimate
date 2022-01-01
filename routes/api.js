@@ -318,7 +318,11 @@ router.get('/get_doc_num/:ID/:IDX', async function(req, res, next) {
         var sql = "SELECT IDX, COMPANY FROM MEMB_tbl WHERE ID = ?";
         db.query(sql, id, function(err, rows, fields) {
             if (!err) {
-                resolve(rows[0].COMPANY);
+                if (rows.length > 0) {
+                    resolve(rows[0].COMPANY);
+                } else {
+                    resolve('미등록');
+                }
             } else {
                 res.send(err);
             }
