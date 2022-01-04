@@ -36,7 +36,7 @@
         alignHoriz: false, // if true, textFit will set text-align: center
         multiLine: false, // if true, textFit will not set white-space: no-wrap
         detectMultiLine: false, // disable to turn off automatic multi-line sensing
-        minFontSize: 2,
+        minFontSize: 1,
         maxFontSize: 12,
         reProcess: true, // if true, textFit will re-process already-fit nodes. Set to 'false' for better performance
         widthOnly: false, // if true, textFit will fit text to element width, regardless of text height
