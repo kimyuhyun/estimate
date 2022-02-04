@@ -35,7 +35,7 @@ var upload = multer({
 
 async function checkMiddleWare(req, res, next) {
     if (req.query.token == null || req.query.token != 'kkyyhh') {
-        res.send('누구냐넌?');
+        res.send('Not Bad 404');
         return;
     }
 
@@ -425,6 +425,20 @@ router.get('/doc_child_delete/:ID/:PARENT_IDX', checkMiddleWare, async function(
             res.send({code: 1});
         } else {
             res.send({code: 0});
+        }
+    });
+});
+
+
+//구독정보저장!
+router.get('/save_my_subscript/:ID/:IS_SUBSCRIPT', checkMiddleWare, function(req, res, next) {
+    const { id, is_subscript } = req.params;
+    var sql = `UPDATE MEMB_tbl SET IS_SUBSCRIPT = ? WHERE ID = ?`;
+    db.query(sql, [is_subscript, id], function(err, rows, fields) {
+        if (!err) {
+            res.send(rows);
+        } else {
+            res.send(err);
         }
     });
 });
