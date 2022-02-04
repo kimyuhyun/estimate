@@ -431,7 +431,7 @@ router.get('/doc_child_delete/:ID/:PARENT_IDX', checkMiddleWare, async function(
 
 
 //구독정보저장!
-router.get('/save_my_subscript/:ID/:IS_SUBSCRIPT', checkMiddleWare, function(req, res, next) {
+router.get('/save_my_subscript/:id/:is_subscript', checkMiddleWare, function(req, res, next) {
     const { id, is_subscript } = req.params;
     var sql = `UPDATE MEMB_tbl SET IS_SUBSCRIPT = ? WHERE ID = ?`;
     db.query(sql, [is_subscript, id], function(err, rows, fields) {
