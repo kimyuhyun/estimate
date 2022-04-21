@@ -20,7 +20,7 @@
     </style>
 
 <body class="p-0 m-0">
-    <div style="position: absolute; top: 100px; right: 0px;">
+    <div style="position: absolute; top: 110px; right: 4px;">
         <% if (my.FILENAME0 != '') { %>
             <img src="<%=my.FILENAME0%>" height="35"/>
         <% } %>
@@ -47,16 +47,16 @@
             </div>
             <div class="align-self-left w-75" style="font-size: 12px; margin-top: -0px;">
                 <% if (your.TEL != '') { %>
-                <span class="me-1">T: <%=your.TEL%></span>
+                <span class="me-1">T:<%=your.TEL%></span>
                 <% } %>
                 <% if (your.FAX != '') { %>
-                <span class="me-1">F: <%=your.FAX%></span>
+                <span class="me-1">F:<%=your.FAX%></span>
                 <% } %>
                 <% if (your.HP != '') { %>
-                <span class="me-1"><br>M: <%=your.HP%></span>
+                <span class="me-1"><br>M:<%=your.HP%></span>
                 <% } %>
                 <% if (your.EMAIL != '') { %>
-                <span><br>E: <%=your.EMAIL%></span>
+                <span><br>E:<%=your.EMAIL%></span>
                 <% } %>
             </div>
             <div>아래와 같이 견적 합니다.</div>
@@ -64,9 +64,9 @@
 
         <div class="d-flex flex-column" style="width: 55%;">
             <div style="font-size: 12px;" class="auto_text_size">
-                <span class="me-1">담당자: <%=my.MANAGER%></span>
-                <span class="me-1">M: <%=my.HP%></span>
-                <span class="me-1">E: <%=my.EMAIL%></span>
+                <span class="me-1">담당자:<%=my.MANAGER%></span>
+                <span class="me-1">M:<%=my.HP%></span>
+                <span class="me-1">E:<%=my.EMAIL%></span>
             </div>
             <table>
                 <tr>
@@ -161,7 +161,7 @@
             <td class="auto_text_size"><%=obj.NAME1%></td>
             <td class="auto_text_size" align="center"><%=obj.GUKUK%></td>
             <td class="auto_text_size" align="center"><%=obj.UNIT%></td>
-            <td class="auto_text_size text-end"><%=obj.QTY.toLocaleString()%></td>
+            <td class="auto_text_size" align="center"><%=obj.QTY.toLocaleString()%></td>
             <td class="auto_text_size text-end"><%=obj.DANGA.toLocaleString()%></td>
             <td class="auto_text_size text-end"><%=obj.PRICE.toLocaleString()%></td>
             <td class="auto_text_size text-end"><%=obj.TAX.toLocaleString()%></td>
