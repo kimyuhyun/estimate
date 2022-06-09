@@ -1,25 +1,30 @@
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <!-- <meta name="viewport" content="width=1200, initial-scale=1, shrink-to-fit=no"> -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <style>
-        table {
-            width: 100%;
-            border: 1px solid #aaaaaa;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<!-- <meta name="viewport" content="width=1200, initial-scale=1, shrink-to-fit=no"> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+<style>
+    table {
+        width: 100%;
+        border: 1px solid #aaaaaa;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
 
-        td {
-            padding: 4px;
-            border: 1px solid #aaaaaa;
-        }
-    </style>
-
-<body class="p-0 m-0">
+    td {
+        padding: 4px;
+        border: 1px solid #aaaaaa;
+    }
+    @font-face {
+        font-family: "Noto Sans Regular";
+        font-weight: normal;
+        src: local(NotoSansCJKkr-Regular);
+        src: url('//t1.daumcdn.net/tistory_admin/static/manage/font/NotoSansCJKkr-Regular.woff2') format("woff2"), url('//t1.daumcdn.net/tistory_admin/static/manage/font/NotoSansCJKkr-Regular.woff') format("woff"), url('//t1.daumcdn.net/tistory_admin/static/manage/font/NotoSansCJKkr-Regular.otf') format("opentype")
+    }
+</style>
+<body class="p-0 m-0" style="font-family:'Noto Sans Regular';">
     <div style="position: absolute; top: 90px; right: 0px;">
         <% if (my.FILENAME0 != '') { %>
             <img src="<%=my.FILENAME0%>" height="35"/>

@@ -1,5 +1,4 @@
-<html lang="en">
-
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -7,10 +6,16 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
 <style>
-table { font-size: 14px; }
+    table { font-size: 14px; }
+    @font-face {
+        font-family: "Noto Sans Regular";
+        font-weight: normal;
+        src: local(NotoSansCJKkr-Regular);
+        src: url('//t1.daumcdn.net/tistory_admin/static/manage/font/NotoSansCJKkr-Regular.woff2') format("woff2"), url('//t1.daumcdn.net/tistory_admin/static/manage/font/NotoSansCJKkr-Regular.woff') format("woff"), url('//t1.daumcdn.net/tistory_admin/static/manage/font/NotoSansCJKkr-Regular.otf') format("opentype")
+    }
 </style>
 
-<body class="p-0">
+<body class="p-0" style="font-family:'Noto Sans Regular';">
 <%
     if (my.FILENAME1 != '') {
 %>
