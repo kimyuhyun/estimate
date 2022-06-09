@@ -45,7 +45,7 @@
     </div>
 
     <div class="d-flex flex-row">
-        <div class="d-flex flex-column justify-content-between" style="width: 45%;">
+        <div class="d-flex flex-column justify-content-between" style="width: 40%;">
             <div class="align-self-left"><%=your.EDATE%></div>
             <div class="d-flex flex-row justify-content-between align-self-left" style="border-bottom: 1px dotted #333; width: 90%;">
                 <h4 class="mb-0"><b><%=your.COMPANY%></b></h4>
@@ -68,7 +68,7 @@
             <div>아래와 같이 견적 합니다.</div>
         </div>
 
-        <div class="d-flex flex-column" style="width: 55%;">
+        <div class="d-flex flex-column" >
             <div style="font-size: 12px;" class="auto_text_size">
                 <span class="me-1">담당자:<%=my.MANAGER%></span>
                 <span class="me-1">M:<%=my.HP%></span>
@@ -76,11 +76,11 @@
             </div>
             <table>
                 <tr>
-                    <td width=24 rowspan="5" class="text-center bg-light auto_text_size">공<br><br>급<br><br>자</td>
+                    <td width=30 rowspan="5" class="text-center bg-light auto_text_size">공<br><br>급<br><br>자</td>
                     <td colspan="4" class="p-0">
                         <table style="border: 0px;">
                             <tr>
-                                <td class="bg-light auto_text_size" style="width: 100px; border: 0px;">사업자 등록번호</td>
+                                <td class="bg-light auto_text_size text-center" style="width: 150px; border: 0px;">사업자 등록번호</td>
                                 <td class="auto_text_size" style="border: 0px; border-left: 1px solid #aaaaaa;"><%=my.CNUM%></td>
                             </tr>
                         </table>
@@ -88,9 +88,9 @@
                 </tr>
 
                 <tr>
-                    <td class="text-center bg-light">상호</td>
+                    <td class="text-center bg-light text-nowrap">상호</td>
                     <td class="auto_text_size"><b><%=my.COMPANY%></b></td>
-                    <td class="text-center bg-light">성명</td>
+                    <td class="text-center bg-light text-nowrap">성명</td>
                     <td class="auto_text_size"><%=my.NAME1%></td>
                 </tr>
 
@@ -112,10 +112,10 @@
                 </tr>
 
                 <tr>
-                    <td class="text-center bg-light">업태</td>
-                    <td class="auto_text_size"><%=my.UPTAE%></td>
-                    <td class="text-center bg-light">종목</td>
-                    <td class="auto_text_size"><%=my.JONGMOK%></td>
+                    <td class="text-center bg-light text-nowrap">업태</td>
+                    <td class="auto_text_size text-nowrap"><%=my.UPTAE%></td>
+                    <td class="text-center bg-light text-nowrap">종목</td>
+                    <td class="auto_text_size text-nowrap"><%=my.JONGMOK%></td>
                 </tr>
 
                 <tr>
@@ -191,7 +191,7 @@
         </tr>
 <%
 
-    var gap = 24 - i;
+    var gap = 23 - i;
 
     if (i > 0) {
         for (j=0;j<gap;j++) {
