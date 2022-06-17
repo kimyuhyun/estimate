@@ -174,12 +174,14 @@ router.get('/login/:ID', checkMiddleWare, async function(req, res, next) {
     var id = req.params.ID;
     var level1 = 9;
     var cnt = 0;
+    var idx = 0;
 
     await new Promise(function(resolve, reject) {
-        var sql = `SELECT COUNT(*) as CNT, LEVEL1 FROM MEMB_tbl WHERE ID = ?`;
+        var sql = `SELECT COUNT(*) as CNT, LEVEL1, IDX FROM MEMB_tbl WHERE ID = ?`;
         db.query(sql, id, function(err, rows, fields) {
             cnt = rows[0].CNT;
             level1 = rows[0].LEVEL1;
+            idx = rows[0].IDX;
             resolve(1);
         });
     }).then();
@@ -210,6 +212,7 @@ router.get('/login/:ID', checkMiddleWare, async function(req, res, next) {
             code: 1,
             ID: id,
             LEVEL1: level1,
+            IDX: idx
         });
     });
 });
