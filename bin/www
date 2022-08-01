@@ -40,13 +40,14 @@ var server = http.createServer(app);
      for (var dev in ifaces) {
          var alias = 0;
          ifaces[dev].forEach(function(details) {
-             if (details.family == 'IPv4' && details.internal === false && details.address.match('172')) {
-                 result = details.address;
-                 ++alias;
-             }
+            //  if (details.family == 'IPv4' && details.internal === false && details.address.match('172')) {
+            if (details.family == "IPv4" && details.internal === false) {
+                result = details.address;
+                ++alias;
+            }
          });
      }
-     console.log(result + ':' + port);
+     console.log('http://' + result + ':' + port);
 });
 server.on('error', onError);
 server.on('listening', onListening);

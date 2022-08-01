@@ -648,8 +648,8 @@ router.post('/delete', checkMiddleWare, async function(req, res, next) {
     var id = req.body.ID;
     var table = req.body.TABLE;
 
-    var sql = "DELETE FROM " + table + " WHERE IDX = ? AND MEMB_ID = ?";
-    db.query(sql, [idx, id], function(err, rows, fields) {
+    var sql = "DELETE FROM ?? WHERE IDX = ? AND MEMB_ID = ?";
+    db.query(sql, [table, idx, id], function(err, rows, fields) {
         if (!err) {
             res.send({
                 code: 1,

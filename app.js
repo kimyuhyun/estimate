@@ -16,6 +16,7 @@ var crudRouter = require('./routes/crud');
 var crud2Router = require('./routes/crud2');
 var analyzerRouter = require('./routes/analyzer');
 var apiRouter = require('./routes/api');
+var api2Router = require('./routes/api2');
 
 var estimateRouter = require('./routes/estimate');
 var mungseRouter = require('./routes/mungse');
@@ -25,6 +26,8 @@ var baljuRouter = require('./routes/balju');
 var excelRouter = require('./routes/excel');
 
 var articleRouter = require('./routes/article');
+
+
 
 var app = express();
 
@@ -68,6 +71,7 @@ app.use('/crud', crudRouter);
 app.use('/crud2', crud2Router);
 app.use('/analyzer', analyzerRouter);
 app.use('/api', apiRouter);
+app.use('/api2', api2Router);
 
 app.use('/estimate', estimateRouter);
 app.use('/mungse', mungseRouter);
